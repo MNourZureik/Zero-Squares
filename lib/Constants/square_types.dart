@@ -1,0 +1,20 @@
+enum SquareTypes {
+  BARRIER,
+  EMPTY,
+  WEAK_BARRIER,
+  COLORABLE,
+
+  RED_GOAL,
+  BLUE_GOAL,
+  YELLOW_GOAL,
+  CYAN_GOAL,
+  PINK_GOAL,
+
+  RED,
+  BLUE,
+  YELLOW,
+  CYAN,
+  PINK,
+  
+  NULL,
+}
