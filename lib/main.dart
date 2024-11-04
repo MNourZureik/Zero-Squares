@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:zero_squares/Constants/boarder_layouts.dart';
+import 'package:zero_squares/Constants/helping_functions.dart';
 import 'package:zero_squares/console/play.dart';
 import 'package:zero_squares/widgets/GameBoardWidget.dart';
 import 'console/game_board.dart';
@@ -40,15 +41,13 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
   @override
   void initState() {
     super.initState();
-    gameBoard = GameBoard(BoardLayouts.LEVEL_DATA[index]['board']!,
-        BoardLayouts.LEVEL_DATA[index]['goals']!);
+    gameBoard = BoardLayouts.LEVELS[index];
 
     // BoardLayouts.getLevel(index);
   }
 
   void resetLevel() {
-    gameBoard = GameBoard(BoardLayouts.LEVEL_DATA[index]['board']!,
-        BoardLayouts.LEVEL_DATA[index]['goals']!);
+    gameBoard = BoardLayouts.LEVELS[index];
 
     //BoardLayouts.getLevel(index);
     setState(() {});
@@ -71,7 +70,7 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
         child: KeyboardListener(
           focusNode: FocusNode()..requestFocus(),
           onKeyEvent: (KeyEvent event) {
-            if (!Play.isAllPlayersWins(gameBoard!)) {
+            if (!HelpingFunctions.isAllPlayersWins(gameBoard!)) {
               if (event is KeyDownEvent) {
                 switch (event.logicalKey.keyLabel) {
                   case 'Arrow Up':
@@ -110,7 +109,7 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
                 }
               }
             } else {
-              if (index >= BoardLayouts.LEVEL_DATA.length - 1) {
+              if (index >= BoardLayouts.LEVELS.length - 1) {
                 showDialog(
                   context: context,
                   builder: (ctx) {
@@ -123,9 +122,7 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
               } else {
                 setState(() {
                   index++;
-                  gameBoard = GameBoard(
-                      BoardLayouts.LEVEL_DATA[index]['board']!,
-                      BoardLayouts.LEVEL_DATA[index]['goals']!);
+                  gameBoard = BoardLayouts.LEVELS[index];
                   // BoardLayouts.getLevel(index); // Load the next level
                 });
               }

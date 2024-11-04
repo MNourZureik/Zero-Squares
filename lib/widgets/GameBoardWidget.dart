@@ -1,10 +1,10 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:zero_squares/Constants/helping_functions.dart';
 import 'package:zero_squares/Constants/position.dart';
 import 'package:zero_squares/Constants/square_types.dart';
 import 'package:zero_squares/console/game_board.dart';
-import 'package:zero_squares/console/play.dart';
 
 class GameBoardWidget extends StatelessWidget {
   final GameBoard gameBoard;
@@ -40,18 +40,18 @@ class GameBoardWidget extends StatelessWidget {
                 SquareTypes? goalType = gameBoard.getGoalsMap()[pos];
 
                 bool isGoal = goalType != null && goalType != SquareTypes.EMPTY;
-                bool isPlay = Play.isPlayerSquare(squareType);
+                bool isPlay = HelpingFunctions.isPlayerSquare(squareType);
 
                 Color color = isPlay
-                    ? Play.getColorForSquare(squareType)
-                    : Play.getColorForSquare(goalType ?? squareType);
+                    ? HelpingFunctions.getColorForSquare(squareType)
+                    : HelpingFunctions.getColorForSquare(goalType ?? squareType);
 
                 return squareType != SquareTypes.NULL
                     ? Container(
                         decoration: BoxDecoration(
                           border: Border.all(
                             color:
-                                isGoal ? Play.getGoalColor(goalType)! : color,
+                                isGoal ? HelpingFunctions.getGoalColor(goalType)! : color,
                             width: 4,
                           ),
                           color: color,

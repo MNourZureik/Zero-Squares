@@ -1,66 +1,30 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:collection';
+import 'package:zero_squares/console/game_board.dart';
+
 import 'position.dart';
 import 'square_types.dart';
 
 class BoardLayouts {
-  static final List<Map<String, HashMap<Position, SquareTypes>>> LEVEL_DATA = [
-    {
-      "board": createLevel1(),
-      "goals": createLevel1_Goals(),
-    },
-    {
-      "board": createLevel2(),
-      "goals": createLevel2_Goals(),
-    },
-    {
-      "board": createLevel6(),
-      "goals": createLevel6_Goals(),
-    },
-    {
-      "board": createLevel7(),
-      "goals": createLevel7_Goals(),
-    },
-    {
-      "board": createLevel10(),
-      "goals": createLevel10_Goals(),
-    },
-    {
-      "board": createLevel11(),
-      "goals": createLevel11_Goals(),
-    },
-    {
-      "board": createLevel15(),
-      "goals": createLevel15_Goals(),
-    },
-    {
-      "board": createLevel19(),
-      "goals": createLevel19_Goals(),
-    },
-    {
-      "board": createLevel20(),
-      "goals": createLevel20_Goals(),
-    },
-    {
-      "board": createLevel21(),
-      "goals": createLevel21_Goals(),
-    },
-    {
-      "board": createLevel24(),
-      "goals": createLevel24_Goals(),
-    },
-    {
-      "board": createLevel26(),
-      "goals": createLevel26_Goals(),
-    },
-    {
-      "board": createLevel27(),
-      "goals": createLevel27_Goals(),
-    },
+  static final List<GameBoard> LEVELS = [
+    createLevel1(),
+    createLevel2(),
+    createLevel6(),
+    createLevel7(),
+    createLevel10(),
+    createLevel11(),
+    createLevel15(),
+    createLevel19(),
+    createLevel20(),
+    createLevel21(),
+    createLevel24(),
+    createLevel26(),
+    createLevel27(),
   ];
-  static HashMap<Position, SquareTypes> createLevel1() {
+  static GameBoard createLevel1() {
     final HashMap<Position, SquareTypes> board = HashMap();
+    final HashMap<Position, SquareTypes> goals = HashMap();
 
     setSquare(getPosition(1, 1), SquareTypes.RED, board);
 
@@ -75,17 +39,12 @@ class BoardLayouts {
     setSquare(getPosition(1, 0), SquareTypes.BARRIER, board);
     setSquare(getPosition(1, 7), SquareTypes.BARRIER, board);
 
-    return board;
+    return GameBoard(board, goals);
   }
 
-  static HashMap<Position, SquareTypes> createLevel1_Goals() {
-    final HashMap<Position, SquareTypes> gaols = HashMap();
-    setSquare(getPosition(1, 6), SquareTypes.RED_GOAL, gaols);
-    return gaols;
-  }
-
-  static HashMap<Position, SquareTypes> createLevel2() {
+  static GameBoard createLevel2() {
     final HashMap<Position, SquareTypes> board = HashMap();
+    final HashMap<Position, SquareTypes> goals = HashMap();
 
     // Row 1:
     for (int y = 0; y <= 7; y++) {
@@ -127,21 +86,19 @@ class BoardLayouts {
         setSquare(getPosition(5, y), SquareTypes.BARRIER, board);
       }
     }
+    setSquare(getPosition(4, 4), SquareTypes.RED_GOAL, goals);
 
     setSquare(getPosition(2, 1), SquareTypes.RED, board);
 
-    return board;
+    return GameBoard(board, goals);
   }
 
-  static HashMap<Position, SquareTypes> createLevel2_Goals() {
-    final HashMap<Position, SquareTypes> gaols = HashMap();
-    setSquare(getPosition(4, 4), SquareTypes.RED_GOAL, gaols);
-    return gaols;
-  }
-
-  static HashMap<Position, SquareTypes> createLevel6() {
+  static GameBoard createLevel6() {
     final HashMap<Position, SquareTypes> board = HashMap();
+    final HashMap<Position, SquareTypes> goals = HashMap();
 
+    setSquare(getPosition(1, 1), SquareTypes.RED_GOAL, goals);
+    setSquare(getPosition(2, 3), SquareTypes.BLUE_GOAL, goals);
     // Row 1 :
     for (int y = 0; y <= 6; y++) {
       setSquare(getPosition(0, y), SquareTypes.BARRIER, board);
@@ -178,18 +135,15 @@ class BoardLayouts {
     for (var y = 0; y <= 8; y++) {
       setSquare(getPosition(4, y), SquareTypes.BARRIER, board);
     }
-    return board;
+    return GameBoard(board, goals);
   }
 
-  static HashMap<Position, SquareTypes> createLevel6_Goals() {
-    final HashMap<Position, SquareTypes> gaols = HashMap();
-    setSquare(getPosition(1, 1), SquareTypes.RED_GOAL, gaols);
-    setSquare(getPosition(2, 3), SquareTypes.BLUE_GOAL, gaols);
-    return gaols;
-  }
-
-  static HashMap<Position, SquareTypes> createLevel7() {
+  static GameBoard createLevel7() {
     final HashMap<Position, SquareTypes> board = HashMap();
+    final HashMap<Position, SquareTypes> goals = HashMap();
+
+    setSquare(getPosition(2, 5), SquareTypes.RED_GOAL, goals);
+    setSquare(getPosition(4, 3), SquareTypes.BLUE_GOAL, goals);
     // Row 1 :
     for (var i = 4; i <= 8; i++) {
       setSquare(getPosition(0, i), SquareTypes.BARRIER, board);
@@ -243,18 +197,15 @@ class BoardLayouts {
       setSquare(getPosition(7, i), SquareTypes.BARRIER, board);
     }
 
-    return board;
+    return GameBoard(board, goals);
   }
 
-  static HashMap<Position, SquareTypes> createLevel7_Goals() {
-    final HashMap<Position, SquareTypes> gaols = HashMap();
-    setSquare(getPosition(2, 5), SquareTypes.RED_GOAL, gaols);
-    setSquare(getPosition(4, 3), SquareTypes.BLUE_GOAL, gaols);
-    return gaols;
-  }
-
-  static HashMap<Position, SquareTypes> createLevel10() {
+  static GameBoard createLevel10() {
     final HashMap<Position, SquareTypes> board = HashMap();
+    final HashMap<Position, SquareTypes> goals = HashMap();
+
+    setSquare(getPosition(3, 5), SquareTypes.RED_GOAL, goals);
+    setSquare(getPosition(2, 6), SquareTypes.BLUE_GOAL, goals);
 
     // Row 1 :
     for (int y = 2; y <= 9; y++) {
@@ -335,20 +286,16 @@ class BoardLayouts {
     for (var i = 1; i <= 10; i++) {
       setSquare(getPosition(7, i), SquareTypes.BARRIER, board);
     }
-    return board;
+    return GameBoard(board, goals);
   }
 
-  static HashMap<Position, SquareTypes> createLevel10_Goals() {
+  static GameBoard createLevel11() {
+    final HashMap<Position, SquareTypes> board = HashMap();
     final HashMap<Position, SquareTypes> goals = HashMap();
 
-    setSquare(getPosition(3, 5), SquareTypes.RED_GOAL, goals);
-    setSquare(getPosition(2, 6), SquareTypes.BLUE_GOAL, goals);
-
-    return goals;
-  }
-
-  static HashMap<Position, SquareTypes> createLevel11() {
-    final HashMap<Position, SquareTypes> board = HashMap();
+    setSquare(getPosition(1, 2), SquareTypes.YELLOW_GOAL, goals);
+    setSquare(getPosition(3, 1), SquareTypes.BLUE_GOAL, goals);
+    setSquare(getPosition(3, 3), SquareTypes.RED_GOAL, goals);
 
     // Row 1 :
     for (int y = 1; y <= 3; y++) {
@@ -382,22 +329,17 @@ class BoardLayouts {
       setSquare(getPosition(4, i), SquareTypes.BARRIER, board);
     }
 
-    return board;
+    return GameBoard(board, goals);
   }
 
-  static HashMap<Position, SquareTypes> createLevel11_Goals() {
+  static GameBoard createLevel15() {
+    final HashMap<Position, SquareTypes> board = HashMap();
     final HashMap<Position, SquareTypes> goals = HashMap();
 
-    // Define goals for each player color
-    setSquare(getPosition(1, 2), SquareTypes.YELLOW_GOAL, goals);
-    setSquare(getPosition(3, 1), SquareTypes.BLUE_GOAL, goals);
-    setSquare(getPosition(3, 3), SquareTypes.RED_GOAL, goals);
+    setSquare(getPosition(2, 3), SquareTypes.BLUE_GOAL, goals);
+    setSquare(getPosition(6, 6), SquareTypes.RED_GOAL, goals);
+    setSquare(getPosition(6, 4), SquareTypes.YELLOW_GOAL, goals);
 
-    return goals;
-  }
-
-  static HashMap<Position, SquareTypes> createLevel15() {
-    final HashMap<Position, SquareTypes> board = HashMap();
     // Row 1 :
     for (int y = 1; y <= 7; y++) {
       setSquare(getPosition(0, y), SquareTypes.BARRIER, board);
@@ -463,19 +405,18 @@ class BoardLayouts {
     for (int y = 0; y <= 7; y++) {
       setSquare(getPosition(8, y), SquareTypes.BARRIER, board);
     }
-    return board;
+    return GameBoard(board, goals);
   }
 
-  static HashMap<Position, SquareTypes> createLevel15_Goals() {
-    final HashMap<Position, SquareTypes> goals = HashMap();
-    setSquare(getPosition(2, 3), SquareTypes.BLUE_GOAL, goals);
-    setSquare(getPosition(6, 6), SquareTypes.RED_GOAL, goals);
-    setSquare(getPosition(6, 4), SquareTypes.YELLOW_GOAL, goals);
-    return goals;
-  }
-
-  static HashMap<Position, SquareTypes> createLevel19() {
+  static GameBoard createLevel19() {
     final HashMap<Position, SquareTypes> board = HashMap();
+    final HashMap<Position, SquareTypes> goals = HashMap();
+
+    setSquare(getPosition(8, 5), SquareTypes.BLUE_GOAL, goals);
+    setSquare(getPosition(6, 4), SquareTypes.RED_GOAL, goals);
+    setSquare(getPosition(1, 2), SquareTypes.YELLOW_GOAL, goals);
+    setSquare(getPosition(10, 5), SquareTypes.CYAN_GOAL, goals);
+
     // Row 1 :
     setSquare(getPosition(0, 1), SquareTypes.BARRIER, board);
     setSquare(getPosition(0, 2), SquareTypes.BARRIER, board);
@@ -564,20 +505,19 @@ class BoardLayouts {
     for (var i = 4; i <= 6; i++) {
       setSquare(getPosition(11, i), SquareTypes.BARRIER, board);
     }
-    return board;
+    return GameBoard(board, goals);
   }
 
-  static HashMap<Position, SquareTypes> createLevel19_Goals() {
-    final HashMap<Position, SquareTypes> goals = HashMap();
-    setSquare(getPosition(8, 5), SquareTypes.BLUE_GOAL, goals);
-    setSquare(getPosition(6, 4), SquareTypes.RED_GOAL, goals);
-    setSquare(getPosition(1, 2), SquareTypes.YELLOW_GOAL, goals);
-    setSquare(getPosition(10, 5), SquareTypes.CYAN_GOAL, goals);
-    return goals;
-  }
-
-  static HashMap<Position, SquareTypes> createLevel20() {
+  static GameBoard createLevel20() {
     final HashMap<Position, SquareTypes> board = HashMap();
+    final HashMap<Position, SquareTypes> goals = HashMap();
+
+    setSquare(getPosition(3, 4), SquareTypes.RED_GOAL, goals);
+    setSquare(getPosition(1, 5), SquareTypes.YELLOW_GOAL, goals);
+    setSquare(getPosition(2, 1), SquareTypes.BLUE_GOAL, goals);
+    setSquare(getPosition(3, 7), SquareTypes.CYAN_GOAL, goals);
+    setSquare(getPosition(3, 2), SquareTypes.PINK_GOAL, goals);
+
     // Row 1 :
     setSquare(getPosition(0, 3), SquareTypes.BARRIER, board);
     setSquare(getPosition(0, 4), SquareTypes.BARRIER, board);
@@ -618,21 +558,16 @@ class BoardLayouts {
     for (var i = 0; i <= 8; i++) {
       setSquare(getPosition(4, i), SquareTypes.BARRIER, board);
     }
-    return board;
+    return GameBoard(board, goals);
   }
 
-  static HashMap<Position, SquareTypes> createLevel20_Goals() {
-    final HashMap<Position, SquareTypes> goals = HashMap();
-    setSquare(getPosition(3, 4), SquareTypes.RED_GOAL, goals);
-    setSquare(getPosition(1, 5), SquareTypes.YELLOW_GOAL, goals);
-    setSquare(getPosition(2, 1), SquareTypes.BLUE_GOAL, goals);
-    setSquare(getPosition(3, 7), SquareTypes.CYAN_GOAL, goals);
-    setSquare(getPosition(3, 2), SquareTypes.PINK_GOAL, goals);
-    return goals;
-  }
-
-  static HashMap<Position, SquareTypes> createLevel21() {
+  static GameBoard createLevel21() {
     final HashMap<Position, SquareTypes> board = HashMap();
+    final HashMap<Position, SquareTypes> goals = HashMap();
+
+    setSquare(getPosition(4, 7), SquareTypes.RED_GOAL, goals);
+    setSquare(getPosition(1, 8), SquareTypes.WEAK_BARRIER, goals);
+
     // Row 1 :
     for (var i = 0; i <= 8; i++) {
       setSquare(getPosition(0, i), SquareTypes.BARRIER, board);
@@ -663,18 +598,19 @@ class BoardLayouts {
     for (var i = 1; i <= 6; i++) {
       setSquare(getPosition(4, i), SquareTypes.EMPTY, board);
     }
-    return board;
+    return GameBoard(board, goals);
   }
 
-  static HashMap<Position, SquareTypes> createLevel21_Goals() {
-    final HashMap<Position, SquareTypes> goals = HashMap();
-    setSquare(getPosition(4, 7), SquareTypes.RED_GOAL, goals);
-    setSquare(getPosition(1, 8), SquareTypes.WEAK_BARRIER, goals);
-    return goals;
-  }
-
-  static HashMap<Position, SquareTypes> createLevel24() {
+  static GameBoard createLevel24() {
     final HashMap<Position, SquareTypes> board = HashMap();
+    final HashMap<Position, SquareTypes> goals = HashMap();
+
+    setSquare(getPosition(2, 0), SquareTypes.WEAK_BARRIER, goals);
+    setSquare(getPosition(3, 0), SquareTypes.WEAK_BARRIER, goals);
+    setSquare(getPosition(2, 1), SquareTypes.RED_GOAL, goals);
+    setSquare(getPosition(1, 2), SquareTypes.YELLOW_GOAL, goals);
+    setSquare(getPosition(4, 6), SquareTypes.BLUE_GOAL, goals);
+
     // Row 1 :
     for (var i = 1; i <= 8; i++) {
       setSquare(getPosition(0, i), SquareTypes.BARRIER, board);
@@ -734,21 +670,18 @@ class BoardLayouts {
       setSquare(getPosition(6, i), SquareTypes.BARRIER, board);
     }
 
-    return board;
+    return GameBoard(board, goals);
   }
 
-  static HashMap<Position, SquareTypes> createLevel24_Goals() {
-    final HashMap<Position, SquareTypes> goals = HashMap();
-    setSquare(getPosition(2, 0), SquareTypes.WEAK_BARRIER, goals);
-    setSquare(getPosition(3, 0), SquareTypes.WEAK_BARRIER, goals);
-    setSquare(getPosition(2, 1), SquareTypes.RED_GOAL, goals);
-    setSquare(getPosition(1, 2), SquareTypes.YELLOW_GOAL, goals);
-    setSquare(getPosition(4, 6), SquareTypes.BLUE_GOAL, goals);
-    return goals;
-  }
-
-  static HashMap<Position, SquareTypes> createLevel26() {
+  static GameBoard createLevel26() {
     final HashMap<Position, SquareTypes> board = HashMap();
+    final HashMap<Position, SquareTypes> goals = HashMap();
+
+    setSquare(getPosition(2, 1), SquareTypes.COLORABLE, goals);
+    setSquare(getPosition(2, 2), SquareTypes.CYAN_GOAL, goals);
+    setSquare(getPosition(2, 3), SquareTypes.YELLOW_GOAL, goals);
+    setSquare(getPosition(1, 10), SquareTypes.PINK_GOAL, goals);
+
     setSquare(getPosition(0, 8), SquareTypes.BARRIER, board);
     setSquare(getPosition(0, 9), SquareTypes.BARRIER, board);
     setSquare(getPosition(0, 10), SquareTypes.BARRIER, board);
@@ -794,20 +727,16 @@ class BoardLayouts {
     for (var i = 0; i <= 11; i++) {
       setSquare(getPosition(4, i), SquareTypes.BARRIER, board);
     }
-    return board;
+    return GameBoard(board, goals);
   }
 
-  static HashMap<Position, SquareTypes> createLevel26_Goals() {
-    final HashMap<Position, SquareTypes> goals = HashMap();
-    setSquare(getPosition(2, 1), SquareTypes.COLORABLE, goals);
-    setSquare(getPosition(2, 2), SquareTypes.CYAN_GOAL, goals);
-    setSquare(getPosition(2, 3), SquareTypes.YELLOW_GOAL, goals);
-    setSquare(getPosition(1, 10), SquareTypes.PINK_GOAL, goals);
-    return goals;
-  }
-
-  static HashMap<Position, SquareTypes> createLevel27() {
+  static GameBoard createLevel27() {
     final HashMap<Position, SquareTypes> board = HashMap();
+    final HashMap<Position, SquareTypes> goals = HashMap();
+
+    setSquare(getPosition(1, 0), SquareTypes.WEAK_BARRIER, goals);
+    setSquare(getPosition(1, 1), SquareTypes.COLORABLE, goals);
+
     for (var i = 0; i <= 8; i++) {
       setSquare(getPosition(0, i), SquareTypes.BARRIER, board);
     }
@@ -877,16 +806,10 @@ class BoardLayouts {
     for (var i = 2; i <= 10; i++) {
       setSquare(getPosition(8, i), SquareTypes.BARRIER, board);
     }
-    return board;
+    return GameBoard(board, goals);
   }
 
-  static HashMap<Position, SquareTypes> createLevel27_Goals() {
-    final HashMap<Position, SquareTypes> goals = HashMap();
-    setSquare(getPosition(1, 0), SquareTypes.WEAK_BARRIER, goals);
-    setSquare(getPosition(1, 1), SquareTypes.COLORABLE, goals);
-    return goals;
-  }
-
+//! HELPING FUNCTION :
   static void setSquare(Position pos, SquareTypes squareType,
       HashMap<Position, SquareTypes> board) {
     board[pos] = squareType;
@@ -895,26 +818,4 @@ class BoardLayouts {
   static Position getPosition(int x, int y) {
     return Position(x, y);
   }
-
-  // static GameBoard getLevel(int index) {
-  //   // Get the original board and goals data
-  //   var originalBoardMap = LEVEL_DATA[index]["board"]!;
-  //   var originalGoalsMap = LEVEL_DATA[index]["goals"]!;
-
-  //   // Create deep copies of board and goals to ensure no references are shared
-  //   HashMap<Position, SquareTypes> newBoardMap = HashMap();
-  //   HashMap<Position, SquareTypes> newGoalsMap = HashMap();
-
-  //   // Deep copy each entry to avoid shared references
-  //   originalBoardMap.forEach((key, value) {
-  //     newBoardMap[Position(key.x, key.y)] = value;
-  //   });
-  //   originalGoalsMap.forEach((key, value) {
-  //     newGoalsMap[Position(key.x, key.y)] = value;
-  //   });
-
-  //   return GameBoard(newBoardMap, newGoalsMap);
-  // }
-
-
 }

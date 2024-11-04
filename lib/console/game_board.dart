@@ -3,63 +3,63 @@ import 'package:zero_squares/Constants/position.dart';
 import 'package:zero_squares/Constants/square_types.dart';
 
 class GameBoard {
-  HashMap<Position, SquareTypes> boardMap;
-  HashMap<Position, SquareTypes> goals;
+  final HashMap<Position, SquareTypes> _board;
+  final HashMap<Position, SquareTypes> _goals;
 
-  GameBoard(this.boardMap, this.goals);
+  GameBoard(this._board, this._goals);
   SquareTypes getSquareType(Position pos) {
-    return boardMap[pos] ?? goals[pos] ?? SquareTypes.NULL;
+    return _board[pos] ?? _goals[pos] ?? SquareTypes.NULL;
   }
 
   void setSquare(Position pos, SquareTypes squareType) {
-    boardMap[pos] = squareType;
+    _board[pos] = squareType;
   }
 
   void clearBoard() {
-    boardMap.clear();
-    goals.clear();
+    _board.clear();
+    _goals.clear();
   }
 
   HashMap<Position, SquareTypes> getBoardMap() {
-    return boardMap;
+    return _board;
   }
 
   HashMap<Position, SquareTypes> getGoalsMap() {
-    return goals;
+    return _goals;
   }
 
   void resetGoals() {
-    for (var pos in goals.keys) {
-      if (boardMap[pos] == SquareTypes.EMPTY) {
-        boardMap[pos] = goals[pos]!;
+    for (var pos in _goals.keys) {
+      if (_board[pos] == SquareTypes.EMPTY) {
+        _board[pos] = _goals[pos]!;
       }
     }
   }
 
   void removeGoal(Position pos) {
     setSquare(pos, SquareTypes.EMPTY);
-    goals.remove(pos);
+    _goals.remove(pos);
   }
 
   void setGoal(Position pos, SquareTypes squareType) {
     if (squareType == SquareTypes.RED) {
-      goals[pos] = SquareTypes.RED_GOAL;
+      _goals[pos] = SquareTypes.RED_GOAL;
       return;
     }
     if (squareType == SquareTypes.BLUE) {
-      goals[pos] = SquareTypes.BLUE_GOAL;
+      _goals[pos] = SquareTypes.BLUE_GOAL;
       return;
     }
     if (squareType == SquareTypes.PINK) {
-      goals[pos] = SquareTypes.PINK_GOAL;
+      _goals[pos] = SquareTypes.PINK_GOAL;
       return;
     }
     if (squareType == SquareTypes.YELLOW) {
-      goals[pos] = SquareTypes.YELLOW_GOAL;
+      _goals[pos] = SquareTypes.YELLOW_GOAL;
       return;
     }
     if (squareType == SquareTypes.CYAN) {
-      goals[pos] = SquareTypes.CYAN_GOAL;
+      _goals[pos] = SquareTypes.CYAN_GOAL;
       return;
     }
   }
