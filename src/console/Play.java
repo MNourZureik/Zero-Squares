@@ -14,9 +14,7 @@ public class Play {
         List<Position> playersPositions = gameBoard.getPlayersPositions();
 
         // Rearrange players if necessary
-        if (isNeedReArrange(gameBoard, playersPositions, direction)) {
-            reArrangePlayers(playersPositions, direction);
-        }
+        reArrangePlayers(playersPositions, direction);
 
         // Move each player
         for (Position playerPosition : playersPositions) {
@@ -98,7 +96,7 @@ public class Play {
         SquareTypes squareType = gameBoard.getSquareType(nextPosition);
 
         // Check if the next square is empty or a goal square
-        return squareType == SquareTypes.EMPTY || HelpingFunctions.isGoalSquare(squareType) || squareType == SquareTypes.COLORABLE;
+        return squareType == SquareTypes.EMPTY || HelpingFunctions.isGoalSquare(squareType) ;
     }
 
     public static void reArrangePlayers(List<Position> playersPositions, Directions direction) {
@@ -109,21 +107,5 @@ public class Play {
             case DOWN -> Comparator.comparingInt(Position::getX).reversed();
         };
         playersPositions.sort(comparator);
-    }
-
-    public static boolean isNeedReArrange(GameBoard gameBoard, List<Position> playersPositions, Directions direction) {
-        // Group players by the axis perpendicular to the movement direction
-        Map<Integer, Integer> movablePlayersCount = new HashMap<>();
-
-        for (Position pos : playersPositions) {
-            int key = (direction == Directions.LEFT || direction == Directions.RIGHT) ? pos.getX() : pos.getY();
-            if (isValidToMove(gameBoard, pos, direction)) {
-                movablePlayersCount.merge(key, 1, Integer::sum);
-                if (movablePlayersCount.get(key) >= 2) {
-                    return true; // Rearrangement needed
-                }
-            }
-        }
-        return false; // No rearrangement needed
     }
 }
