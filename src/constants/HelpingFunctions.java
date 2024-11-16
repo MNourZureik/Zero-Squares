@@ -115,4 +115,15 @@ public class HelpingFunctions {
 
         return maxY;
     }
+    public static SquareTypes getPlayerGoalType(SquareTypes playerType) {
+        return switch (playerType) {
+            case RED -> SquareTypes.RED_GOAL;
+            case BLUE -> SquareTypes.BLUE_GOAL;
+            case YELLOW -> SquareTypes.YELLOW_GOAL;
+            case CYAN -> SquareTypes.CYAN_GOAL;
+            case PINK -> SquareTypes.PINK_GOAL;
+            default -> throw new IllegalArgumentException("Invalid player type: " + playerType);
+        };
+    }
+
 }

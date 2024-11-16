@@ -2,6 +2,8 @@ package console;
 
 import constants.BoardLayouts;
 import constants.Directions;
+import constants.Position;
+import constants.SquareTypes;
 
 import java.util.*;
 
@@ -19,13 +21,31 @@ public class Computer {
             GameBoard gameBoardCopy = GameBoard.getDeepCopy(gameBoard);
             GameBoard movedBoard = Play.move(gameBoardCopy, direction);
 
-            if (movedBoard != null && !movedBoard.equals(gameBoard)) {
+            if (movedBoard != null && !movedBoard.equals(gameBoard) && !hasRepeatedGoals(movedBoard.getGoalsMap())) {
                 nextStates.add(new AbstractMap.SimpleEntry<>(direction, movedBoard));
             }
         }
 
         return nextStates;
     }
+
+    public static boolean hasRepeatedGoals(Map<Position, SquareTypes> goalsMap) {
+        // Use a HashSet to track seen goal types
+        Set<SquareTypes> seenGoals = new HashSet<>();
+
+        for (SquareTypes goalType : goalsMap.values()) {
+            if (seenGoals.contains(goalType)) {
+                // If the goal type has already been seen, it's repeated
+                return true;
+            }
+            // Add the goal type to the set
+            seenGoals.add(goalType);
+        }
+
+        // No repeated goals found
+        return false;
+    }
+
 
     /**
      * Performs a Breadth-First Search (BFS) to find the shortest path to the goal.

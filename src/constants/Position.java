@@ -1,5 +1,7 @@
 package constants;
 
+import java.util.Objects;
+
 public class Position {
     private int x;
     private int y;
@@ -34,7 +36,7 @@ public class Position {
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(x) ^ Integer.hashCode(y);
+        return Objects.hash(x,y);
     }
 
     @Override
