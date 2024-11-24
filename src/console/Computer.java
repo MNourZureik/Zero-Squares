@@ -46,7 +46,6 @@ public class Computer {
         return false;
     }
 
-
     /**
      * Performs a Breadth-First Search (BFS) to find the shortest path to the goal.
      */
@@ -154,13 +153,70 @@ public class Computer {
     /**
      * Initiates the search algorithm based on the provided type.
      */
+
+    private static List<Directions> ucs(GameBoard startGameBoard) {
+        long startTime = System.currentTimeMillis();
+
+        PriorityQueue<CostNode> queue = new PriorityQueue<>();
+        Set<GameBoard> visited = new HashSet<>();
+
+        CostNode startNode = new CostNode(startGameBoard, null, null , 1);
+        queue.add(startNode);
+        visited.add(startGameBoard);
+
+        while (!queue.isEmpty()) {
+            CostNode currentNode = queue.poll();
+            GameBoard currentState = currentNode.getState();
+
+            // Check if all goals are reached
+            if (currentState.getGoalsMap().isEmpty()) {
+                int sumCost = 0;
+                // Goal reached; reconstruct the path
+                List<Directions> path = new ArrayList<>();
+                CostNode node = currentNode;
+                while (node.getAction() != null) {
+                    path.addFirst(node.getAction());
+                    node = node.getPredecessor();
+                    sumCost += node.getCost();
+                }
+
+                long elapsedTime = System.currentTimeMillis() - startTime;
+                System.out.println("Visited Set: " + visited.size());
+                System.out.println("Path Length: " + path.size());
+                System.out.println("Directions: " + path);
+                System.out.println("Time: " + elapsedTime / 1000.0 + " seconds");
+                System.out.println("Cost: " + sumCost);
+                return path;
+            }
+
+            // Generate successors
+            List<Map.Entry<Directions, GameBoard>> successors = nextState(currentState);
+
+            for (Map.Entry<Directions, GameBoard> entry : successors) {
+                Directions direction = entry.getKey();
+                GameBoard nextState = entry.getValue();
+
+                if (!visited.contains(nextState)) {
+                    visited.add(nextState);
+                    queue.add(new CostNode(nextState, currentNode, direction , 1));
+                }
+            }
+        }
+
+        return null; // No solution found
+    }
+
     public static List<Directions> play(String type, int index) {
         GameBoard gameBoard = GameBoard.getDeepCopy(BoardLayouts.LEVELS.get(index));
         if ("bfs".equalsIgnoreCase(type)) {
-            return bfs(gameBoard);
+            return ucs(gameBoard);
         } else if ("dfs".equalsIgnoreCase(type)) {
             return dfs(gameBoard);
+        }else if("ucs".equalsIgnoreCase(type)){
+            return ucs(gameBoard);
         }
+
         return null;
     }
+
 }
