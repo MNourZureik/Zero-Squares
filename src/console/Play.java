@@ -4,6 +4,7 @@ import constants.Directions;
 import constants.HelpingFunctions;
 import constants.Position;
 import constants.SquareTypes;
+import javafx.geometry.Pos;
 
 import java.util.*;
 
@@ -16,9 +17,19 @@ public class Play {
         // Rearrange players if necessary
         reArrangePlayers(playersPositions, direction);
 
+        ArrayList<Boolean> isValids = new ArrayList<>();
+        int index =0 ;
+        for(Position playerPosition : playersPositions){
+            if (isValidToMove(gameBoard, playerPosition , direction)){
+             isValids.add(true);
+            }
+            else {
+                isValids.add(false);
+            }
+        }
         // Move each player
         for (Position playerPosition : playersPositions) {
-            if (isValidToMove(gameBoard, playerPosition, direction)) {
+            if (isValids.getFirst()) {
                 Position finalPosition = calculateNewPosition(gameBoard, playerPosition, direction);
                 if (finalPosition == null) {
                     // Player hit a weak barrier; reset the game
@@ -39,6 +50,7 @@ public class Play {
                 gameBoard.getPlayers().remove(playerPosition);
                 gameBoard.getPlayers().put(finalPosition, playerType);
             }
+            isValids.removeFirst();
         }
 
         // Reset goals if necessary

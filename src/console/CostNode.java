@@ -53,9 +53,6 @@ public class CostNode implements Comparable<CostNode>{
         if(node.cost > this.cost){
             return -1;
         }
-        else if(node.cost < this.cost){
-            return 1;
-        }
         else return 1;
     }
 }

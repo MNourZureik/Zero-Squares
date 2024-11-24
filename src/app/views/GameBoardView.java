@@ -125,7 +125,7 @@ public class GameBoardView {
 
     private void animateComputerSolution() {
         if (controller.getSolutionPath() == null || controller.getSolutionPath().isEmpty()) {
-            System.out.println("No solution available to animate.");
+            System.out.println("Solving...");
             return; // Do not proceed if there is no solution
         }
 
