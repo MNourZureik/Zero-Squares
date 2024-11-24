@@ -21,14 +21,14 @@ public class Computer {
             GameBoard gameBoardCopy = GameBoard.getDeepCopy(gameBoard);
             GameBoard movedBoard = Play.move(gameBoardCopy, direction);
 
-            if (movedBoard != null && !movedBoard.equals(gameBoard) && !hasRepeatedGoals(movedBoard.getGoalsMap())) {
+            if (movedBoard != null && !movedBoard.equals(gameBoard) ) {
                 nextStates.add(new AbstractMap.SimpleEntry<>(direction, movedBoard));
             }
         }
 
         return nextStates;
     }
-
+    //&& !hasRepeatedGoals(movedBoard.getGoalsMap())
     public static boolean hasRepeatedGoals(Map<Position, SquareTypes> goalsMap) {
         // Use a HashSet to track seen goal types
         Set<SquareTypes> seenGoals = new HashSet<>();
@@ -45,7 +45,6 @@ public class Computer {
         // No repeated goals found
         return false;
     }
-
     /**
      * Performs a Breadth-First Search (BFS) to find the shortest path to the goal.
      */
@@ -65,20 +64,7 @@ public class Computer {
 
             // Check if all goals are reached
             if (currentState.getGoalsMap().isEmpty()) {
-                // Goal reached; reconstruct the path
-                List<Directions> path = new ArrayList<>();
-                Node node = currentNode;
-                while (node.getAction() != null) {
-                    path.addFirst(node.getAction());
-                    node = node.getPredecessor();
-                }
-
-                long elapsedTime = System.currentTimeMillis() - startTime;
-                System.out.println("Visited Set: " + visited.size());
-                System.out.println("Path Length: " + path.size());
-                System.out.println("Directions: " + path);
-                System.out.println("Time: " + elapsedTime / 1000.0 + " seconds");
-                return path;
+                return ReturnGoalPath(currentNode, startTime, visited.size());
             }
 
             // Generate successors
@@ -87,7 +73,7 @@ public class Computer {
             for (Map.Entry<Directions, GameBoard> entry : successors) {
                 Directions direction = entry.getKey();
                 GameBoard nextState = entry.getValue();
-
+                // Check if all goals are reached
                 if (!visited.contains(nextState)) {
                     visited.add(nextState);
                     queue.add(new Node(nextState, currentNode, direction));
@@ -97,7 +83,6 @@ public class Computer {
 
         return null; // No solution found
     }
-
     /**
      * Performs a Depth-First Search (DFS) to find a path to the goal.
      */
@@ -117,20 +102,7 @@ public class Computer {
 
             // Check if all goals are reached
             if (currentState.getGoalsMap().isEmpty()) {
-                // Goal reached; reconstruct the path
-                List<Directions> path = new ArrayList<>();
-                Node node = currentNode;
-                while (node.getAction() != null) {
-                    path.addFirst(node.getAction()); // Add action at the beginning
-                    node = node.getPredecessor();
-                }
-
-                long elapsedTime = System.currentTimeMillis() - startTime;
-                System.out.println("Visited Set: " + visited.size());
-                System.out.println("Path Length: " + path.size());
-                System.out.println("Directions: " + path);
-                System.out.println("Time: " + elapsedTime / 1000.0 + " seconds");
-                return path;
+                return ReturnGoalPath(currentNode, startTime, visited.size());
             }
 
             // Generate successors
@@ -153,63 +125,57 @@ public class Computer {
     /**
      * Initiates the search algorithm based on the provided type.
      */
-
     private static List<Directions> ucs(GameBoard startGameBoard) {
         long startTime = System.currentTimeMillis();
 
-        PriorityQueue<CostNode> queue = new PriorityQueue<>();
-        Set<GameBoard> visited = new HashSet<>();
+        // Priority Queue to manage exploration based on cost from the GameBoard
+        PriorityQueue<Node> queue = new PriorityQueue<>(Comparator.comparingInt(node -> node.getState().getCost()));
+        // Map to track visited states with their associated costs
+        Map<GameBoard, Integer> visited = new HashMap<>();
 
-        CostNode startNode = new CostNode(startGameBoard, null, null , 1);
+        // Initialize with the starting GameBoard
+        startGameBoard.setCost(0); // Set the initial cost to 0
+        Node startNode = new Node(startGameBoard, null, null);
         queue.add(startNode);
-        visited.add(startGameBoard);
+        visited.put(startGameBoard, 0);
 
         while (!queue.isEmpty()) {
-            CostNode currentNode = queue.poll();
-            GameBoard currentState = currentNode.getState();
+            // Fetch the Node with the lowest cost
+            Node currentNode = queue.poll();
+            GameBoard currentBoard = currentNode.getState();
 
             // Check if all goals are reached
-            if (currentState.getGoalsMap().isEmpty()) {
-                int sumCost = 0;
-                // Goal reached; reconstruct the path
-                List<Directions> path = new ArrayList<>();
-                CostNode node = currentNode;
-                while (node.getAction() != null) {
-                    path.addFirst(node.getAction());
-                    node = node.getPredecessor();
-                    sumCost += node.getCost();
-                }
-
-                long elapsedTime = System.currentTimeMillis() - startTime;
-                System.out.println("Visited Set: " + visited.size());
-                System.out.println("Path Length: " + path.size());
-                System.out.println("Directions: " + path);
-                System.out.println("Time: " + elapsedTime / 1000.0 + " seconds");
-                System.out.println("Cost: " + sumCost);
-                return path;
+            if (currentBoard.getGoalsMap().isEmpty()) {
+              return ReturnGoalPath(currentNode , startTime , visited.size());
             }
 
             // Generate successors
-            List<Map.Entry<Directions, GameBoard>> successors = nextState(currentState);
+            List<Map.Entry<Directions, GameBoard>> successors = nextState(currentBoard);
 
             for (Map.Entry<Directions, GameBoard> entry : successors) {
                 Directions direction = entry.getKey();
-                GameBoard nextState = entry.getValue();
+                GameBoard nextBoard = entry.getValue();
 
-                if (!visited.contains(nextState)) {
-                    visited.add(nextState);
-                    queue.add(new CostNode(nextState, currentNode, direction , currentNode.getCost() + 1));
+                // Calculate cumulative cost
+                int newCost = currentBoard.getCost() + nextBoard.getCost();
+
+                // If the state is new or found with a lower cost, update it
+                if (!visited.containsKey(nextBoard) || visited.get(nextBoard) > newCost) {
+                    nextBoard.setCost(newCost); // Update the cost in the GameBoard
+                    visited.put(nextBoard, newCost);
+                    queue.add(new Node(nextBoard, currentNode, direction));
                 }
             }
         }
 
-        return null; // No solution found
+        // No solution found
+        return null;
     }
 
     public static List<Directions> play(String type, int index) {
         GameBoard gameBoard = GameBoard.getDeepCopy(BoardLayouts.LEVELS.get(index));
         if ("bfs".equalsIgnoreCase(type)) {
-            return ucs(gameBoard);
+            return bfs(gameBoard);
         } else if ("dfs".equalsIgnoreCase(type)) {
             return dfs(gameBoard);
         }else if("ucs".equalsIgnoreCase(type)){
@@ -217,6 +183,24 @@ public class Computer {
         }
 
         return null;
+    }
+
+    private static List<Directions> ReturnGoalPath(Node goalNode, long startTime, int visitedSize) {
+        Deque<Directions> path = new ArrayDeque<>();
+        Node node = goalNode;
+
+        while (node.getAction() != null) {
+            path.addFirst(node.getAction()); // Insert at the beginning
+            node = node.getPredecessor();
+        }
+
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        System.out.println("Visited Set: " + visitedSize);
+        System.out.println("Path Length: " + path.size());
+        System.out.println("Directions: " + path);
+        System.out.println("Time: " + elapsedTime / 1000.0 + " seconds");
+        System.out.println("Cost: " + goalNode.getState().getCost());
+        return new ArrayList<>(path);
     }
 
 }

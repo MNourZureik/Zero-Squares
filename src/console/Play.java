@@ -4,11 +4,13 @@ import constants.Directions;
 import constants.HelpingFunctions;
 import constants.Position;
 import constants.SquareTypes;
-import javafx.geometry.Pos;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class Play {
+
 
     public static GameBoard move(GameBoard gameBoard, Directions direction) {
         // Get all players' positions
@@ -17,20 +19,20 @@ public class Play {
         // Rearrange players if necessary
         reArrangePlayers(playersPositions, direction);
 
-        ArrayList<Boolean> isValids = new ArrayList<>();
-        int index =0 ;
-        for(Position playerPosition : playersPositions){
-            if (isValidToMove(gameBoard, playerPosition , direction)){
-             isValids.add(true);
-            }
-            else {
-                isValids.add(false);
-            }
-        }
-        // Move each player
+        // Determine if players can move
+        List<Boolean> canMoveList = new ArrayList<>();
         for (Position playerPosition : playersPositions) {
-            if (isValids.getFirst()) {
+            canMoveList.add(isValidToMove(gameBoard, playerPosition, direction));
+        }
+
+        // Move each player
+        for (int i = 0; i < playersPositions.size(); i++) {
+            Position playerPosition = playersPositions.get(i);
+
+            // Check if the player can move
+            if (canMoveList.get(i)) {
                 Position finalPosition = calculateNewPosition(gameBoard, playerPosition, direction);
+
                 if (finalPosition == null) {
                     // Player hit a weak barrier; reset the game
                     return null;
@@ -50,10 +52,7 @@ public class Play {
                 gameBoard.getPlayers().remove(playerPosition);
                 gameBoard.getPlayers().put(finalPosition, playerType);
             }
-            isValids.removeFirst();
         }
-
-        // Reset goals if necessary
         gameBoard.resetGoals();
 
         return gameBoard;
@@ -72,15 +71,21 @@ public class Play {
                 // Color the cell and continue moving
                 gameBoard.setGoal(nextPosition, playerType);
                 currentPosition = nextPosition;
+                gameBoard.setCost(gameBoard.getCost()+1);
+
             } else if (squareType == playerGoalType) {
                 // Player reaches own goal
                 gameBoard.removePlayer(pos);
                 gameBoard.removeGoal(nextPosition);
+                gameBoard.setCost(gameBoard.getCost()+1);
                 break;
-            } else if (HelpingFunctions.isGoalSquare(squareType)) {
+            }
+            else if (HelpingFunctions.isGoalSquare(squareType)) {
                 // Continue moving through other goals
                 currentPosition = nextPosition;
-            } else if (squareType == SquareTypes.WEAK_BARRIER) {
+                gameBoard.setCost(gameBoard.getCost()+1);
+            }
+            else if (squareType == SquareTypes.WEAK_BARRIER) {
                 // Hit a weak barrier; reset the game
                 return null;
             } else if (squareType != SquareTypes.EMPTY) {
@@ -89,6 +94,7 @@ public class Play {
             } else {
                 // Continue moving through empty squares
                 currentPosition = nextPosition;
+                gameBoard.setCost(gameBoard.getCost()+1);
             }
         }
         return currentPosition;

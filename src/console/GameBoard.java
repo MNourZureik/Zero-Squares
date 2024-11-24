@@ -13,6 +13,7 @@ public class GameBoard {
     private final HashMap<Position, SquareTypes> board;
     private final HashMap<Position, SquareTypes> goals;
     private final HashMap<Position, SquareTypes> players;
+    private int cost = 0;
 
     public GameBoard(HashMap<Position, SquareTypes> board, HashMap<Position, SquareTypes> goals, HashMap<Position, SquareTypes> players) {
         this.board = board;
@@ -109,5 +110,13 @@ public class GameBoard {
     @Override
     public int hashCode() {
         return Objects.hash(players , goals);
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 }
