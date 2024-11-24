@@ -198,7 +198,7 @@ public class Computer {
 
                 if (!visited.contains(nextState)) {
                     visited.add(nextState);
-                    queue.add(new CostNode(nextState, currentNode, direction , 1));
+                    queue.add(new CostNode(nextState, currentNode, direction , currentNode.getCost() + 1));
                 }
             }
         }
