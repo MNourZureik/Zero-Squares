@@ -21,14 +21,13 @@ public class Computer {
             GameBoard gameBoardCopy = GameBoard.getDeepCopy(gameBoard);
             GameBoard movedBoard = Play.move(gameBoardCopy, direction);
 
-            if (movedBoard != null && !movedBoard.equals(gameBoard) ) {
+            if (movedBoard != null && !movedBoard.equals(gameBoard) && !hasRepeatedGoals(movedBoard.getGoalsMap())) {
                 nextStates.add(new AbstractMap.SimpleEntry<>(direction, movedBoard));
             }
         }
-
         return nextStates;
     }
-    //&& !hasRepeatedGoals(movedBoard.getGoalsMap())
+
     public static boolean hasRepeatedGoals(Map<Position, SquareTypes> goalsMap) {
         // Use a HashSet to track seen goal types
         Set<SquareTypes> seenGoals = new HashSet<>();
@@ -64,7 +63,7 @@ public class Computer {
 
             // Check if all goals are reached
             if (currentState.getGoalsMap().isEmpty()) {
-                return ReturnGoalPath(currentNode, startTime, visited.size());
+                return ReturnGoalPath(currentNode, startTime, visited.size() , false);
             }
 
             // Generate successors
@@ -102,7 +101,7 @@ public class Computer {
 
             // Check if all goals are reached
             if (currentState.getGoalsMap().isEmpty()) {
-                return ReturnGoalPath(currentNode, startTime, visited.size());
+                return ReturnGoalPath(currentNode, startTime, visited.size() , false);
             }
 
             // Generate successors
@@ -120,6 +119,43 @@ public class Computer {
         }
 
         return null; // No solution found
+    }
+
+
+    public static List<Directions> dfsRecursion(GameBoard startGameBoard) {
+        long startTime = System.currentTimeMillis();
+        Set<GameBoard> visited = new HashSet<>();
+        return dfsRecursive(startGameBoard, visited, null, null, startTime);
+    }
+
+    private static List<Directions> dfsRecursive(GameBoard currentBoard, Set<GameBoard> visited, Node predecessor, Directions action, long startTime) {
+        // Mark the current state as visited
+        visited.add(currentBoard);
+
+        // Base case: Check if all goals are reached
+        if (currentBoard.getGoalsMap().isEmpty()) {
+            Node goalNode = new Node(currentBoard, predecessor, action);
+            return ReturnGoalPath(goalNode, startTime, visited.size(), false);
+        }
+
+        // Generate successors
+        List<Map.Entry<Directions, GameBoard>> successors = nextState(currentBoard);
+
+        for (Map.Entry<Directions, GameBoard> entry : successors) {
+            Directions direction = entry.getKey();
+            GameBoard nextBoard = entry.getValue();
+
+            // Recursive exploration for unvisited states
+            if (!visited.contains(nextBoard)) {
+                Node currentNode = new Node(currentBoard, predecessor, action);
+                List<Directions> result = dfsRecursive(nextBoard, visited, currentNode, direction, startTime);
+                if (result != null) {
+                    return result; // Return the path as soon as the goal is found
+                }
+            }
+        }
+
+        return null; // No solution found in this branch
     }
 
     /**
@@ -146,7 +182,7 @@ public class Computer {
 
             // Check if all goals are reached
             if (currentBoard.getGoalsMap().isEmpty()) {
-              return ReturnGoalPath(currentNode , startTime , visited.size());
+              return ReturnGoalPath(currentNode , startTime , visited.size() , true);
             }
 
             // Generate successors
@@ -180,12 +216,14 @@ public class Computer {
             return dfs(gameBoard);
         }else if("ucs".equalsIgnoreCase(type)){
             return ucs(gameBoard);
+        } else if ("dfs-r".equalsIgnoreCase(type)) {
+            return dfsRecursion(gameBoard);
         }
 
         return null;
     }
 
-    private static List<Directions> ReturnGoalPath(Node goalNode, long startTime, int visitedSize) {
+    private static List<Directions> ReturnGoalPath(Node goalNode, long startTime, int visitedSize , boolean isHaveCost) {
         Deque<Directions> path = new ArrayDeque<>();
         Node node = goalNode;
 
@@ -199,7 +237,9 @@ public class Computer {
         System.out.println("Path Length: " + path.size());
         System.out.println("Directions: " + path);
         System.out.println("Time: " + elapsedTime / 1000.0 + " seconds");
-        System.out.println("Cost: " + goalNode.getState().getCost());
+        if(isHaveCost){
+            System.out.println("Cost: " + goalNode.getState().getCost());
+        }
         return new ArrayList<>(path);
     }
 

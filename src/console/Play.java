@@ -53,6 +53,7 @@ public class Play {
                 gameBoard.getPlayers().put(finalPosition, playerType);
             }
         }
+        //        System.out.println(gameBoard.getCost());
         gameBoard.resetGoals();
 
         return gameBoard;

@@ -27,13 +27,16 @@ public class AlgorithmSelectionView {
         Button ucsButton = new Button("UCS (Uniform Cost Search)");
         ucsButton.setOnAction(_ -> AlgorithmSelectionController.navigateToGameBoard(stage, levelIndex, "ucs"));
 
+        Button dfs_R_Button = new Button("DFS-Recursion");
+        dfs_R_Button.setOnAction(_ -> AlgorithmSelectionController.navigateToGameBoard(stage, levelIndex, "dfs-r"));
+
         // Back button to go back to level selection
         Button backButton = new Button("Back");
         BorderPane.setAlignment(backButton, Pos.TOP_LEFT);
         backButton.setOnAction(_ -> controller.navigateBackToLevelSelection());
 
         // Add buttons to the layout
-        root.getChildren().addAll(bfsButton, dfsButton, ucsButton, backButton);
+        root.getChildren().addAll(bfsButton, dfsButton, ucsButton, backButton , dfs_R_Button);
     }
 
     public VBox getView() {
