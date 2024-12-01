@@ -22,6 +22,28 @@ public class HelpingFunctions {
         };
     }
 
+    public static int isPlayerGoal(Position player, Position goal, GameBoard gameBoard) {
+        SquareTypes playerPosType = gameBoard.getSquareType(player);
+        SquareTypes goalPosType = gameBoard.getSquareType(goal);
+
+        int h = 0 ;
+
+        boolean isEqual = switch (playerPosType) {
+            case RED -> goalPosType == SquareTypes.RED_GOAL;
+            case BLUE -> goalPosType == SquareTypes.BLUE_GOAL;
+            case YELLOW -> goalPosType == SquareTypes.YELLOW_GOAL;
+            case PINK -> goalPosType == SquareTypes.PINK_GOAL;
+            case CYAN -> goalPosType == SquareTypes.CYAN_GOAL;
+            default -> false;
+        };
+        if (isEqual){
+            h += (Math.abs((goal.getX() - player.getX()) + (goal.getY() - player.getY())));
+        }
+
+        return h;
+    }
+
+
     // Check if the square type represents a player
     public static boolean isPlayerSquare(SquareTypes squareType) {
         return squareType == SquareTypes.RED ||

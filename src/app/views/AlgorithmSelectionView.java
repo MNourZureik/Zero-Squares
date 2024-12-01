@@ -30,13 +30,20 @@ public class AlgorithmSelectionView {
         Button dfs_R_Button = new Button("DFS-Recursion");
         dfs_R_Button.setOnAction(_ -> AlgorithmSelectionController.navigateToGameBoard(stage, levelIndex, "dfs-r"));
 
+        Button hill_climbing = new Button("Hill-Climbing");
+        hill_climbing.setOnAction(_ -> AlgorithmSelectionController.navigateToGameBoard(stage, levelIndex, "hill-climbing"));
+
+        Button a_star = new Button("A-Star");
+        a_star.setOnAction(_ -> AlgorithmSelectionController.navigateToGameBoard(stage, levelIndex, "a_star"));
+
+
         // Back button to go back to level selection
         Button backButton = new Button("Back");
         BorderPane.setAlignment(backButton, Pos.TOP_LEFT);
         backButton.setOnAction(_ -> controller.navigateBackToLevelSelection());
 
         // Add buttons to the layout
-        root.getChildren().addAll(bfsButton, dfsButton, ucsButton, backButton , dfs_R_Button);
+        root.getChildren().addAll(bfsButton, dfsButton, ucsButton , dfs_R_Button,hill_climbing,a_star, backButton);
     }
 
     public VBox getView() {

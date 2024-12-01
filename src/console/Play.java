@@ -6,6 +6,7 @@ import constants.Position;
 import constants.SquareTypes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -127,4 +128,5 @@ public class Play {
         };
         playersPositions.sort(comparator);
     }
+
 }

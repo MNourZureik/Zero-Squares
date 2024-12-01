@@ -1,9 +1,6 @@
 package console;
 
-import constants.BoardLayouts;
-import constants.Directions;
-import constants.Position;
-import constants.SquareTypes;
+import constants.*;
 
 import java.util.*;
 
@@ -21,12 +18,13 @@ public class Computer {
             GameBoard gameBoardCopy = GameBoard.getDeepCopy(gameBoard);
             GameBoard movedBoard = Play.move(gameBoardCopy, direction);
 
-            if (movedBoard != null && !movedBoard.equals(gameBoard) && !hasRepeatedGoals(movedBoard.getGoalsMap())) {
+            if (movedBoard != null && !movedBoard.equals(gameBoard) ) {
                 nextStates.add(new AbstractMap.SimpleEntry<>(direction, movedBoard));
             }
         }
         return nextStates;
     }
+    //&& !hasRepeatedGoals(movedBoard.getGoalsMap())
 
     public static boolean hasRepeatedGoals(Map<Position, SquareTypes> goalsMap) {
         // Use a HashSet to track seen goal types
@@ -161,6 +159,126 @@ public class Computer {
     /**
      * Initiates the search algorithm based on the provided type.
      */
+
+    private static List<Directions> hillClimbing(GameBoard startGameBoard){
+        long startTime = System.currentTimeMillis();
+
+        // Priority Queue to manage exploration based on cost from the GameBoard
+        Queue<Node> queue = new LinkedList<>();
+
+        // Map to track visited states with their associated costs
+        Map<GameBoard, Integer> visited = new HashMap<>();
+
+        startGameBoard.setCost(0); // Set the initial cost to 0
+        Node startNode = new Node(startGameBoard, null, null);
+        queue.add(startNode);
+        visited.put(startGameBoard, 0);
+        int min_cost = 0;
+
+        while (!queue.isEmpty()) {
+            Node currentNode = queue.poll();
+            GameBoard currentBoard = currentNode.getState();
+
+            if (currentBoard.getGoalsMap().isEmpty()) {
+                return ReturnGoalPath(currentNode , startTime , visited.size() , true);
+            }
+
+            List<Map.Entry<Directions, GameBoard>> successors = nextState(currentBoard);
+            GameBoard min_cost_gameboard = currentBoard;
+            Directions direction = Directions.UP;
+            for (Map.Entry<Directions, GameBoard> entry : successors) {
+                Directions current_direction = entry.getKey();
+                GameBoard nextBoard = entry.getValue();
+
+                int current_cost = startGameBoard.getCost() - nextBoard.getCost();
+                System.out.println("current Direction :"+direction);
+                System.out.println("current cost :"+current_cost);
+                System.out.println("min cost :"+min_cost);
+                if(current_cost >= 0 && current_cost <= min_cost){
+                    min_cost = current_cost;
+                    min_cost_gameboard = nextBoard;
+                    min_cost_gameboard.setCost(min_cost);
+                    direction = current_direction;
+                }
+
+                if (!visited.containsKey(nextBoard)) {
+                    nextBoard.setCost(current_cost);
+                    visited.put(nextBoard, current_cost);
+                }
+            }
+            startGameBoard.setCost(min_cost);
+            queue.add(new Node(min_cost_gameboard, currentNode, direction));
+            if(min_cost_gameboard.equals(currentBoard)){
+                return ReturnGoalPath(currentNode , startTime , visited.size() , true);
+            }
+
+        }
+
+        // No solution found
+        return null;
+    }
+
+    private static int ManhatenDistancehueristic(GameBoard gameBoard){
+        int heuristic = 0;
+        HashMap<Position, SquareTypes> goals = gameBoard.getGoalsMap();
+        HashMap<Position, SquareTypes> players = gameBoard.getPlayers();
+
+        for(Position player_pos : players.keySet()){
+            for(Position goal_pos : goals.keySet()){
+                heuristic += HelpingFunctions.isPlayerGoal(player_pos , goal_pos , gameBoard);
+            }
+        }
+        return heuristic;
+    }
+
+
+    private static List<Directions> a_star(GameBoard startGameBoard){
+        long startTime = System.currentTimeMillis();
+
+        // Priority Queue to manage exploration based on cost from the GameBoard
+        PriorityQueue<Node> queue = new PriorityQueue<>(Comparator.comparingInt(node -> node.getState().getCost()));
+        // Map to track visited states with their associated costs
+        Map<GameBoard, Integer> visited = new HashMap<>();
+
+        // Initialize with the starting GameBoard
+        startGameBoard.setCost(0); // Set the initial cost to 0//ManhatenDistancehueristic(startGameBoard)
+        Node startNode = new Node(startGameBoard, null, null);
+        queue.add(startNode);
+        visited.put(startGameBoard, 0); //ManhatenDistancehueristic(startGameBoard)
+
+        while (!queue.isEmpty()) {
+            // Fetch the Node with the lowest cost
+            Node currentNode = queue.poll();
+            GameBoard currentBoard = currentNode.getState();
+
+            // Check if all goals are reached
+            if (currentBoard.getGoalsMap().isEmpty()) {
+                return ReturnGoalPath(currentNode , startTime , visited.size() , true);
+            }
+
+            // Generate successors
+            List<Map.Entry<Directions, GameBoard>> successors = nextState(currentBoard);
+
+            for (Map.Entry<Directions, GameBoard> entry : successors) {
+                Directions direction = entry.getKey();
+                GameBoard nextBoard = entry.getValue();
+
+                // Calculate cumulative cost
+                int newCost = currentBoard.getCost() + ManhatenDistancehueristic(nextBoard);//currentBoard.getCost() + nextBoard.getCost() + ManhatenDistancehueristic(nextBoard);
+
+                // If the state is new or found with a lower cost, update it
+                if (!visited.containsKey(nextBoard) || visited.get(nextBoard) > newCost) {
+                    nextBoard.setCost(newCost); // Update the cost in the GameBoard
+                    visited.put(nextBoard, newCost);
+                    queue.add(new Node(nextBoard, currentNode, direction));
+                }
+            }
+        }
+
+        // No solution found
+        return null;
+    }
+
     private static List<Directions> ucs(GameBoard startGameBoard) {
         long startTime = System.currentTimeMillis();
 
@@ -218,6 +336,10 @@ public class Computer {
             return ucs(gameBoard);
         } else if ("dfs-r".equalsIgnoreCase(type)) {
             return dfsRecursion(gameBoard);
+        } else if ("hill-climbing".equalsIgnoreCase(type)) {
+            return hillClimbing(gameBoard);
+        }else if("a_star".equalsIgnoreCase(type)){
+            return a_star(gameBoard);
         }
 
         return null;

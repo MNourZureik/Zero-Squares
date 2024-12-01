@@ -70,6 +70,9 @@ public class GameBoard {
         return new ArrayList<>(players.keySet());
     }
 
+    public List<Position> getGoalsPositions() {
+        return new ArrayList<>(goals.keySet());
+    }
     public void resetGoals() {
         for (Position pos : goals.keySet()) {
             if (board.get(pos) == SquareTypes.EMPTY) {
