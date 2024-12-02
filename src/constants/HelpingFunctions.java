@@ -1,9 +1,10 @@
 package constants;
 
 import console.GameBoard;
+import console.Node;
 import javafx.scene.paint.Color;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class HelpingFunctions {
 
@@ -147,6 +148,26 @@ public class HelpingFunctions {
             case PINK -> SquareTypes.PINK_GOAL;
             default -> throw new IllegalArgumentException("Invalid player type: " + playerType);
         };
+    }
+
+    public static List<Directions> ReturnGoalPath(Node goalNode, long startTime, int visitedSize, boolean isHaveCost) {
+        Deque<Directions> path = new ArrayDeque<>();
+        Node node = goalNode;
+
+        while (node.getAction() != null) {
+            path.addFirst(node.getAction()); // Insert at the beginning
+            node = node.getPredecessor();
+        }
+
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        System.out.println("Visited Set: " + visitedSize);
+        System.out.println("Path Length: " + path.size());
+        System.out.println("Directions: " + path);
+        System.out.println("Time: " + elapsedTime / 1000.0 + " seconds");
+        if (isHaveCost) {
+            System.out.println("Cost: " + goalNode.getState().getCost());
+        }
+        return new ArrayList<>(path);
     }
 
 }

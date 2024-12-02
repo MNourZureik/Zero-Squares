@@ -1,12 +1,12 @@
 package console;
 
-import constants.*;
+import constants.BoardLayouts;
+import constants.Directions;
+import constants.HelpingFunctions;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Computer {
-
     /**
      * Generates the next possible states from the current game board,
      * along with the directions that lead to them.
@@ -25,7 +25,6 @@ public class Computer {
         }
         return nextStates;
     }
-
     /**
      * Performs a Breadth-First Search (BFS) to find the shortest path to the goal.
      */
@@ -45,7 +44,7 @@ public class Computer {
 
             // Check if all goals are reached
             if (currentState.getGoalsMap().isEmpty()) {
-                return ReturnGoalPath(currentNode, startTime, visited.size(), false);
+                return HelpingFunctions.ReturnGoalPath(currentNode, startTime, visited.size(), false);
             }
 
             // Generate successors
@@ -64,7 +63,6 @@ public class Computer {
 
         return null; // No solution found
     }
-
     /**
      * Performs a Depth-First Search (DFS) to find a path to the goal.
      */
@@ -84,7 +82,7 @@ public class Computer {
 
             // Check if all goals are reached
             if (currentState.getGoalsMap().isEmpty()) {
-                return ReturnGoalPath(currentNode, startTime, visited.size(), false);
+                return HelpingFunctions.ReturnGoalPath(currentNode, startTime, visited.size(), false);
             }
 
             // Generate successors
@@ -106,12 +104,11 @@ public class Computer {
     /**
      * Performs a Recursive Depth-First Search (DFS) to find a path to the goal.
      */
-    public static List<Directions> dfsRecursion(GameBoard startGameBoard) {
+    private static List<Directions> dfsRecursion(GameBoard startGameBoard) {
         long startTime = System.currentTimeMillis();
         Set<GameBoard> visited = new HashSet<>();
         return dfsRecursive(startGameBoard, visited, null, null, startTime);
     }
-
     private static List<Directions> dfsRecursive(GameBoard currentBoard, Set<GameBoard> visited, Node predecessor, Directions action, long startTime) {
         // Mark the current state as visited
         visited.add(currentBoard);
@@ -119,7 +116,7 @@ public class Computer {
         // Base case: Check if all goals are reached
         if (currentBoard.getGoalsMap().isEmpty()) {
             Node goalNode = new Node(currentBoard, predecessor, action);
-            return ReturnGoalPath(goalNode, startTime, visited.size(), false);
+            return HelpingFunctions.ReturnGoalPath(goalNode, startTime, visited.size(), false);
         }
 
         // Generate successors
@@ -142,56 +139,117 @@ public class Computer {
         return null; // No solution found in this branch
     }
     /*
-     * Initiates the search algorithm based on the provided type.
+     * Performs a Hill Climbing Simple to find a path to the goal.
      */
-//    private static List<Directions> hillClimbing_Simple(GameBoard startGameBoard) {
-//        long startTime = System.currentTimeMillis();
-//
-//        // Priority Queue to manage exploration based on cost from the GameBoard
-//        Queue<Node> queue = new LinkedList<>();
-//        // Map to track visited states with their associated costs
-//        Map<GameBoard, Integer> visited = new HashMap<>();
-//
-//        // Initialize with the starting GameBoard
-//        startGameBoard.setCost(0); // Set the initial cost to 0
-//        Node startNode = new Node(startGameBoard, null, null);
-//        queue.add(startNode);
-//        visited.put(startGameBoard, 0);
-//
-//        while (!queue.isEmpty()) {
-//            // Fetch the Node with the lowest cost
-//            Node currentNode = queue.poll();
-//            GameBoard currentBoard = currentNode.getState();
-//
-//            // Check if all goals are reached
-//            if (currentBoard.getGoalsMap().isEmpty()) {
-//                return ReturnGoalPath(currentNode, startTime, visited.size(), true);
-//            }
-//
-//            // Generate successors
-//            List<Map.Entry<Directions, GameBoard>> successors = nextState(currentBoard);
-//
-//            for (Map.Entry<Directions, GameBoard> entry : successors) {
-//                Directions direction = entry.getKey();
-//                GameBoard nextBoard = entry.getValue();
-//
-//                // Calculate cumulative cost
-//                int newCost = currentBoard.getCost() +  ;// + nextBoard.getCost();
-//
-//                // If the state is new or found with a lower cost, update it
-//                if (!visited.containsKey(nextBoard) || visited.get(nextBoard) > newCost) {
-//                    nextBoard.setCost(newCost); // Update the cost in the GameBoard
-//                    visited.put(nextBoard, newCost);
-//                    queue.add(new Node(nextBoard, currentNode, direction));
-//                }
-//            }
-//        }
-//
-//
-//        return null ;
-//    }
-//
-//
+    private static List<Directions> hillClimbing_Simple(GameBoard startGameBoard) {
+        long startTime = System.currentTimeMillis();
+
+        // Map to track visited states with their associated costs
+        Map<GameBoard, Integer> visited = new HashMap<>();
+
+        // Initialize with the starting GameBoard
+        startGameBoard.setCost(Heuristic.ManhatenDistancehueristic(startGameBoard));
+        Node currentNode = new Node(startGameBoard, null, null);
+        visited.put(startGameBoard, startGameBoard.getCost());
+
+        while (true) {
+            GameBoard currentBoard = currentNode.getState();
+
+            // Check if all goals are reached
+            if (currentBoard.getGoalsMap().isEmpty()) {
+                return HelpingFunctions.ReturnGoalPath(currentNode, startTime, visited.size(), true);
+            }
+
+            // Generate successors
+            List<Map.Entry<Directions, GameBoard>> successors = nextState(currentBoard);
+
+            // Filter successors to remove boards with repeated goals
+            List<Map.Entry<Directions, GameBoard>> validSuccessors = successors.stream()
+                    .filter(entry -> !Heuristic.hasRepeatedGoals(entry.getValue().getGoalsMap()))
+                    .toList();
+
+            // Find the best successor based on heuristic :
+            Node bestNode = null;
+            int bestHeuristic = Integer.MAX_VALUE;
+            for (Map.Entry<Directions, GameBoard> entry : validSuccessors) {
+                Directions direction = entry.getKey();
+                GameBoard nextBoard = entry.getValue();
+
+                int heuristic = Heuristic.ManhatenDistancehueristic(nextBoard);
+
+                // Only consider better states
+                if (heuristic < bestHeuristic) {
+                    bestHeuristic = heuristic;
+                    bestNode = new Node(nextBoard, currentNode, direction);
+                }
+            }
+
+            // If no better state is found, terminate
+            if (bestNode == null || bestHeuristic >= currentBoard.getCost()) {
+                System.out.println("Stuck in local optimum.");
+                return null;
+            }
+
+            // Move to the best successor
+            currentNode = bestNode;
+            currentBoard.setCost(bestHeuristic);
+            visited.put(currentBoard, bestHeuristic);
+        }
+    }
+    /*
+     * Performs a Hill Climbing Steepest to find a path to the goal.
+     */
+    private static List<Directions> hillClimbingSteepest(GameBoard startGameBoard) {
+        long startTime = System.currentTimeMillis();
+
+        // Initialize with the starting GameBoard
+        startGameBoard.setCost(Heuristic.ManhatenDistancehueristic(startGameBoard));
+        Node currentNode = new Node(startGameBoard, null, null);
+
+        while (true) {
+            GameBoard currentBoard = currentNode.getState();
+
+            // Check if all goals are reached
+            if (currentBoard.getGoalsMap().isEmpty()) {
+                return HelpingFunctions.ReturnGoalPath(currentNode, startTime, 0, true);
+            }
+
+            // Generate successors
+            List<Map.Entry<Directions, GameBoard>> successors = nextState(currentBoard);
+
+            // Filter successors to remove boards with repeated goals
+            List<Map.Entry<Directions, GameBoard>> validSuccessors = successors.stream()
+                    .filter(entry -> !Heuristic.hasRepeatedGoals(entry.getValue().getGoalsMap()))
+                    .toList();
+
+            // Evaluate all successors and find the best one
+            Node bestNode = null;
+            int bestHeuristic = Integer.MAX_VALUE;
+
+            for (Map.Entry<Directions, GameBoard> entry : validSuccessors) {
+                Directions direction = entry.getKey();
+                GameBoard nextBoard = entry.getValue();
+
+                int heuristic = Heuristic.ManhatenDistancehueristic(nextBoard);
+
+                // Check for the steepest improvement
+                if (heuristic < bestHeuristic) {
+                    bestHeuristic = heuristic;
+                    bestNode = new Node(nextBoard, currentNode, direction);
+                }
+            }
+
+            // If no better successor is found, terminate (local optimum)
+            if (bestNode == null || bestHeuristic >= currentBoard.getCost()) {
+                System.out.println("Stuck in local optimum.");
+                return null;
+            }
+
+            // Move to the best successor
+            currentNode = bestNode;
+            currentNode.getState().setCost(bestHeuristic);
+        }
+    }
     /*
      * Performs a-star (A*) to find a path to the goal.
      */
@@ -213,7 +271,7 @@ public class Computer {
 
             // Goal check
             if (currentBoard.getGoalsMap().isEmpty()) {
-                return ReturnGoalPath(currentNode, startTime, visited.size(), true);
+                return HelpingFunctions.ReturnGoalPath(currentNode, startTime, visited.size(), true);
             }
 
             // Generate successors
@@ -244,7 +302,9 @@ public class Computer {
         // No solution found
         return null;
     }
-
+    /*
+     * Performs Uniform Cost Search (UCS) to find a path to the goal.
+     */
     private static List<Directions> ucs(GameBoard startGameBoard) {
         long startTime = System.currentTimeMillis();
 
@@ -266,7 +326,7 @@ public class Computer {
 
             // Check if all goals are reached
             if (currentBoard.getGoalsMap().isEmpty()) {
-                return ReturnGoalPath(currentNode, startTime, visited.size(), true);
+                return HelpingFunctions.ReturnGoalPath(currentNode, startTime, visited.size(), true);
             }
 
             // Generate successors
@@ -291,7 +351,9 @@ public class Computer {
         // No solution found
         return null;
     }
-
+    /*
+     * Initial playing algorithm.
+     */
     public static List<Directions> play(String type, int index) {
         GameBoard gameBoard = GameBoard.getDeepCopy(BoardLayouts.LEVELS.get(index));
         if ("bfs".equalsIgnoreCase(type)) {
@@ -302,8 +364,10 @@ public class Computer {
             return ucs(gameBoard);
         } else if ("dfs-r".equalsIgnoreCase(type)) {
             return dfsRecursion(gameBoard);
-        } else if ("hill-climbing".equalsIgnoreCase(type)) {
+        } else if ("hill-climbing-simple".equalsIgnoreCase(type)) {
             return hillClimbing_Simple(gameBoard);
+        } else if ("hill-climbing-steepest".equalsIgnoreCase(type)) {
+            return hillClimbingSteepest(gameBoard);
         } else if ("a_star".equalsIgnoreCase(type)) {
             return a_star(gameBoard);
         }
@@ -311,24 +375,6 @@ public class Computer {
         return null;
     }
 
-    private static List<Directions> ReturnGoalPath(Node goalNode, long startTime, int visitedSize, boolean isHaveCost) {
-        Deque<Directions> path = new ArrayDeque<>();
-        Node node = goalNode;
 
-        while (node.getAction() != null) {
-            path.addFirst(node.getAction()); // Insert at the beginning
-            node = node.getPredecessor();
-        }
-
-        long elapsedTime = System.currentTimeMillis() - startTime;
-        System.out.println("Visited Set: " + visitedSize);
-        System.out.println("Path Length: " + path.size());
-        System.out.println("Directions: " + path);
-        System.out.println("Time: " + elapsedTime / 1000.0 + " seconds");
-        if (isHaveCost) {
-            System.out.println("Cost: " + goalNode.getState().getCost());
-        }
-        return new ArrayList<>(path);
-    }
 
 }
