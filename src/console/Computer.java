@@ -3,6 +3,7 @@ package console;
 import constants.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Computer {
 
@@ -18,30 +19,13 @@ public class Computer {
             GameBoard gameBoardCopy = GameBoard.getDeepCopy(gameBoard);
             GameBoard movedBoard = Play.move(gameBoardCopy, direction);
 
-            if (movedBoard != null && !movedBoard.equals(gameBoard) ) {
+            if (movedBoard != null && !movedBoard.equals(gameBoard)) {
                 nextStates.add(new AbstractMap.SimpleEntry<>(direction, movedBoard));
             }
         }
         return nextStates;
     }
-    //&& !hasRepeatedGoals(movedBoard.getGoalsMap())
 
-    public static boolean hasRepeatedGoals(Map<Position, SquareTypes> goalsMap) {
-        // Use a HashSet to track seen goal types
-        Set<SquareTypes> seenGoals = new HashSet<>();
-
-        for (SquareTypes goalType : goalsMap.values()) {
-            if (seenGoals.contains(goalType)) {
-                // If the goal type has already been seen, it's repeated
-                return true;
-            }
-            // Add the goal type to the set
-            seenGoals.add(goalType);
-        }
-
-        // No repeated goals found
-        return false;
-    }
     /**
      * Performs a Breadth-First Search (BFS) to find the shortest path to the goal.
      */
@@ -61,7 +45,7 @@ public class Computer {
 
             // Check if all goals are reached
             if (currentState.getGoalsMap().isEmpty()) {
-                return ReturnGoalPath(currentNode, startTime, visited.size() , false);
+                return ReturnGoalPath(currentNode, startTime, visited.size(), false);
             }
 
             // Generate successors
@@ -80,6 +64,7 @@ public class Computer {
 
         return null; // No solution found
     }
+
     /**
      * Performs a Depth-First Search (DFS) to find a path to the goal.
      */
@@ -99,7 +84,7 @@ public class Computer {
 
             // Check if all goals are reached
             if (currentState.getGoalsMap().isEmpty()) {
-                return ReturnGoalPath(currentNode, startTime, visited.size() , false);
+                return ReturnGoalPath(currentNode, startTime, visited.size(), false);
             }
 
             // Generate successors
@@ -118,8 +103,9 @@ public class Computer {
 
         return null; // No solution found
     }
-
-
+    /**
+     * Performs a Recursive Depth-First Search (DFS) to find a path to the goal.
+     */
     public static List<Directions> dfsRecursion(GameBoard startGameBoard) {
         long startTime = System.currentTimeMillis();
         Set<GameBoard> visited = new HashSet<>();
@@ -155,121 +141,101 @@ public class Computer {
 
         return null; // No solution found in this branch
     }
-
-    /**
+    /*
      * Initiates the search algorithm based on the provided type.
      */
-
-    private static List<Directions> hillClimbing(GameBoard startGameBoard){
+//    private static List<Directions> hillClimbing_Simple(GameBoard startGameBoard) {
+//        long startTime = System.currentTimeMillis();
+//
+//        // Priority Queue to manage exploration based on cost from the GameBoard
+//        Queue<Node> queue = new LinkedList<>();
+//        // Map to track visited states with their associated costs
+//        Map<GameBoard, Integer> visited = new HashMap<>();
+//
+//        // Initialize with the starting GameBoard
+//        startGameBoard.setCost(0); // Set the initial cost to 0
+//        Node startNode = new Node(startGameBoard, null, null);
+//        queue.add(startNode);
+//        visited.put(startGameBoard, 0);
+//
+//        while (!queue.isEmpty()) {
+//            // Fetch the Node with the lowest cost
+//            Node currentNode = queue.poll();
+//            GameBoard currentBoard = currentNode.getState();
+//
+//            // Check if all goals are reached
+//            if (currentBoard.getGoalsMap().isEmpty()) {
+//                return ReturnGoalPath(currentNode, startTime, visited.size(), true);
+//            }
+//
+//            // Generate successors
+//            List<Map.Entry<Directions, GameBoard>> successors = nextState(currentBoard);
+//
+//            for (Map.Entry<Directions, GameBoard> entry : successors) {
+//                Directions direction = entry.getKey();
+//                GameBoard nextBoard = entry.getValue();
+//
+//                // Calculate cumulative cost
+//                int newCost = currentBoard.getCost() +  ;// + nextBoard.getCost();
+//
+//                // If the state is new or found with a lower cost, update it
+//                if (!visited.containsKey(nextBoard) || visited.get(nextBoard) > newCost) {
+//                    nextBoard.setCost(newCost); // Update the cost in the GameBoard
+//                    visited.put(nextBoard, newCost);
+//                    queue.add(new Node(nextBoard, currentNode, direction));
+//                }
+//            }
+//        }
+//
+//
+//        return null ;
+//    }
+//
+//
+    /*
+     * Performs a-star (A*) to find a path to the goal.
+     */
+    private static List<Directions> a_star(GameBoard startGameBoard) {
         long startTime = System.currentTimeMillis();
 
-        // Priority Queue to manage exploration based on cost from the GameBoard
-        Queue<Node> queue = new LinkedList<>();
-
-        // Map to track visited states with their associated costs
+        PriorityQueue<Node> queue = new PriorityQueue<>(Comparator.comparingInt(node ->
+                node.getState().getCost() + Heuristic.ManhatenDistancehueristic(node.getState())));
         Map<GameBoard, Integer> visited = new HashMap<>();
 
-        startGameBoard.setCost(0); // Set the initial cost to 0
+        startGameBoard.setCost(0); // Initialize cost
         Node startNode = new Node(startGameBoard, null, null);
         queue.add(startNode);
         visited.put(startGameBoard, 0);
-        int min_cost = 0;
 
         while (!queue.isEmpty()) {
             Node currentNode = queue.poll();
             GameBoard currentBoard = currentNode.getState();
 
+            // Goal check
             if (currentBoard.getGoalsMap().isEmpty()) {
-                return ReturnGoalPath(currentNode , startTime , visited.size() , true);
-            }
-
-            List<Map.Entry<Directions, GameBoard>> successors = nextState(currentBoard);
-            GameBoard min_cost_gameboard = currentBoard;
-            Directions direction = Directions.UP;
-            for (Map.Entry<Directions, GameBoard> entry : successors) {
-                Directions current_direction = entry.getKey();
-                GameBoard nextBoard = entry.getValue();
-
-                int current_cost = startGameBoard.getCost() - nextBoard.getCost();
-                System.out.println("current Direction :"+direction);
-                System.out.println("current cost :"+current_cost);
-                System.out.println("min cost :"+min_cost);
-                if(current_cost >= 0 && current_cost <= min_cost){
-                    min_cost = current_cost;
-                    min_cost_gameboard = nextBoard;
-                    min_cost_gameboard.setCost(min_cost);
-                    direction = current_direction;
-                }
-
-                if (!visited.containsKey(nextBoard)) {
-                    nextBoard.setCost(current_cost);
-                    visited.put(nextBoard, current_cost);
-                }
-            }
-            startGameBoard.setCost(min_cost);
-            queue.add(new Node(min_cost_gameboard, currentNode, direction));
-            if(min_cost_gameboard.equals(currentBoard)){
-                return ReturnGoalPath(currentNode , startTime , visited.size() , true);
-            }
-
-        }
-
-        // No solution found
-        return null;
-    }
-
-    private static int ManhatenDistancehueristic(GameBoard gameBoard){
-        int heuristic = 0;
-        HashMap<Position, SquareTypes> goals = gameBoard.getGoalsMap();
-        HashMap<Position, SquareTypes> players = gameBoard.getPlayers();
-
-        for(Position player_pos : players.keySet()){
-            for(Position goal_pos : goals.keySet()){
-                heuristic += HelpingFunctions.isPlayerGoal(player_pos , goal_pos , gameBoard);
-            }
-        }
-        return heuristic;
-    }
-
-
-    private static List<Directions> a_star(GameBoard startGameBoard){
-        long startTime = System.currentTimeMillis();
-
-        // Priority Queue to manage exploration based on cost from the GameBoard
-        PriorityQueue<Node> queue = new PriorityQueue<>(Comparator.comparingInt(node -> node.getState().getCost()));
-        // Map to track visited states with their associated costs
-        Map<GameBoard, Integer> visited = new HashMap<>();
-
-        // Initialize with the starting GameBoard
-        startGameBoard.setCost(0); // Set the initial cost to 0//ManhatenDistancehueristic(startGameBoard)
-        Node startNode = new Node(startGameBoard, null, null);
-        queue.add(startNode);
-        visited.put(startGameBoard, 0); //ManhatenDistancehueristic(startGameBoard)
-
-        while (!queue.isEmpty()) {
-            // Fetch the Node with the lowest cost
-            Node currentNode = queue.poll();
-            GameBoard currentBoard = currentNode.getState();
-
-            // Check if all goals are reached
-            if (currentBoard.getGoalsMap().isEmpty()) {
-                return ReturnGoalPath(currentNode , startTime , visited.size() , true);
+                return ReturnGoalPath(currentNode, startTime, visited.size(), true);
             }
 
             // Generate successors
             List<Map.Entry<Directions, GameBoard>> successors = nextState(currentBoard);
 
-            for (Map.Entry<Directions, GameBoard> entry : successors) {
+            // Filter successors to remove boards with repeated goals
+            List<Map.Entry<Directions, GameBoard>> validSuccessors = successors.stream()
+                    .filter(entry -> !Heuristic.hasRepeatedGoals(entry.getValue().getGoalsMap()))
+                    .toList();
+
+            for (Map.Entry<Directions, GameBoard> entry : validSuccessors) {
                 Directions direction = entry.getKey();
                 GameBoard nextBoard = entry.getValue();
 
-                // Calculate cumulative cost
-                int newCost = currentBoard.getCost() + ManhatenDistancehueristic(nextBoard);//currentBoard.getCost() + nextBoard.getCost() + ManhatenDistancehueristic(nextBoard);
+                // Compute costs
+                int child_cost = currentBoard.getCost() + 1;//nextBoard.getCost(); // Assume movement cost = 1
+                int f_n = Heuristic.ManhatenDistancehueristic(nextBoard) + child_cost;
 
-                // If the state is new or found with a lower cost, update it
-                if (!visited.containsKey(nextBoard) || visited.get(nextBoard) > newCost) {
-                    nextBoard.setCost(newCost); // Update the cost in the GameBoard
-                    visited.put(nextBoard, newCost);
+                // Check if the state is new or found with a lower cost
+                if (!visited.containsKey(nextBoard) || visited.get(nextBoard) > f_n) {
+                    nextBoard.setCost(child_cost); // Update cost in GameBoard
+                    visited.put(nextBoard, f_n);   // Store new f_n in visited
                     queue.add(new Node(nextBoard, currentNode, direction));
                 }
             }
@@ -300,7 +266,7 @@ public class Computer {
 
             // Check if all goals are reached
             if (currentBoard.getGoalsMap().isEmpty()) {
-              return ReturnGoalPath(currentNode , startTime , visited.size() , true);
+                return ReturnGoalPath(currentNode, startTime, visited.size(), true);
             }
 
             // Generate successors
@@ -311,7 +277,7 @@ public class Computer {
                 GameBoard nextBoard = entry.getValue();
 
                 // Calculate cumulative cost
-                int newCost = currentBoard.getCost() + nextBoard.getCost();
+                int newCost = currentBoard.getCost()  + nextBoard.getCost() ;// + nextBoard.getCost();
 
                 // If the state is new or found with a lower cost, update it
                 if (!visited.containsKey(nextBoard) || visited.get(nextBoard) > newCost) {
@@ -332,20 +298,20 @@ public class Computer {
             return bfs(gameBoard);
         } else if ("dfs".equalsIgnoreCase(type)) {
             return dfs(gameBoard);
-        }else if("ucs".equalsIgnoreCase(type)){
+        } else if ("ucs".equalsIgnoreCase(type)) {
             return ucs(gameBoard);
         } else if ("dfs-r".equalsIgnoreCase(type)) {
             return dfsRecursion(gameBoard);
         } else if ("hill-climbing".equalsIgnoreCase(type)) {
-            return hillClimbing(gameBoard);
-        }else if("a_star".equalsIgnoreCase(type)){
+            return hillClimbing_Simple(gameBoard);
+        } else if ("a_star".equalsIgnoreCase(type)) {
             return a_star(gameBoard);
         }
 
         return null;
     }
 
-    private static List<Directions> ReturnGoalPath(Node goalNode, long startTime, int visitedSize , boolean isHaveCost) {
+    private static List<Directions> ReturnGoalPath(Node goalNode, long startTime, int visitedSize, boolean isHaveCost) {
         Deque<Directions> path = new ArrayDeque<>();
         Node node = goalNode;
 
@@ -359,7 +325,7 @@ public class Computer {
         System.out.println("Path Length: " + path.size());
         System.out.println("Directions: " + path);
         System.out.println("Time: " + elapsedTime / 1000.0 + " seconds");
-        if(isHaveCost){
+        if (isHaveCost) {
             System.out.println("Cost: " + goalNode.getState().getCost());
         }
         return new ArrayList<>(path);

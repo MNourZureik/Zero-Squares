@@ -26,7 +26,7 @@ public class HelpingFunctions {
         SquareTypes playerPosType = gameBoard.getSquareType(player);
         SquareTypes goalPosType = gameBoard.getSquareType(goal);
 
-        int h = 0 ;
+        int h = 0;
 
         boolean isEqual = switch (playerPosType) {
             case RED -> goalPosType == SquareTypes.RED_GOAL;
@@ -36,8 +36,8 @@ public class HelpingFunctions {
             case CYAN -> goalPosType == SquareTypes.CYAN_GOAL;
             default -> false;
         };
-        if (isEqual){
-            h += (Math.abs((goal.getX() - player.getX()) + (goal.getY() - player.getY())));
+        if (isEqual) {
+            h += (Math.abs((goal.getX() - player.getX()) + Math.abs(goal.getY() - player.getY())));
         }
 
         return h;
@@ -137,6 +137,7 @@ public class HelpingFunctions {
 
         return maxY;
     }
+
     public static SquareTypes getPlayerGoalType(SquareTypes playerType) {
         return switch (playerType) {
             case RED -> SquareTypes.RED_GOAL;

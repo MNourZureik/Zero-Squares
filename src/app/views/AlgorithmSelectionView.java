@@ -19,10 +19,10 @@ public class AlgorithmSelectionView {
 
         // Buttons for algorithm selection
         Button bfsButton = new Button("BFS (Breadth First Search)");
-        bfsButton.setOnAction(_ -> AlgorithmSelectionController.navigateToGameBoard(stage , levelIndex,"bfs"));
+        bfsButton.setOnAction(_ -> AlgorithmSelectionController.navigateToGameBoard(stage, levelIndex, "bfs"));
 
         Button dfsButton = new Button("DFS (Depth First Search)");
-        dfsButton.setOnAction(_ -> AlgorithmSelectionController.navigateToGameBoard(stage , levelIndex,"dfs"));
+        dfsButton.setOnAction(_ -> AlgorithmSelectionController.navigateToGameBoard(stage, levelIndex, "dfs"));
 
         Button ucsButton = new Button("UCS (Uniform Cost Search)");
         ucsButton.setOnAction(_ -> AlgorithmSelectionController.navigateToGameBoard(stage, levelIndex, "ucs"));
@@ -43,7 +43,7 @@ public class AlgorithmSelectionView {
         backButton.setOnAction(_ -> controller.navigateBackToLevelSelection());
 
         // Add buttons to the layout
-        root.getChildren().addAll(bfsButton, dfsButton, ucsButton , dfs_R_Button,hill_climbing,a_star, backButton);
+        root.getChildren().addAll(bfsButton, dfsButton, ucsButton, dfs_R_Button, hill_climbing, a_star, backButton);
     }
 
     public VBox getView() {

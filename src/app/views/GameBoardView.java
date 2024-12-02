@@ -7,10 +7,11 @@ import constants.Position;
 import constants.SquareTypes;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
 import java.util.HashMap;
 
 public class GameBoardView {
@@ -18,7 +19,7 @@ public class GameBoardView {
     private final GridPane grid;
     private final GameBoardController controller;
 
-    public GameBoardView(GameBoardController controller , int levelIndex) {
+    public GameBoardView(GameBoardController controller, int levelIndex) {
         this.controller = controller;
         controller.setView(this);
 
@@ -76,11 +77,11 @@ public class GameBoardView {
                     square.setStroke(Color.BLACK);
                     square.setStrokeWidth(5);
                 } else {
-                    if(squareType == SquareTypes.BARRIER){
+                    if (squareType == SquareTypes.BARRIER) {
                         square.setStroke(Color.BLACK);
                         square.setStrokeWidth(5);
                     }
-                    if (squareType == SquareTypes.EMPTY){
+                    if (squareType == SquareTypes.EMPTY) {
                         square.setStroke(Color.WHITE);
                         square.setStrokeWidth(5);
                     }

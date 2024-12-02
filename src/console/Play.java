@@ -5,10 +5,7 @@ import constants.HelpingFunctions;
 import constants.Position;
 import constants.SquareTypes;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Play {
 
@@ -68,26 +65,23 @@ public class Play {
         while (true) {
             Position nextPosition = getNextPosition(currentPosition, direction);
             SquareTypes squareType = gameBoard.getSquareType(nextPosition);
-
             if (squareType == SquareTypes.COLORABLE) {
                 // Color the cell and continue moving
                 gameBoard.setGoal(nextPosition, playerType);
                 currentPosition = nextPosition;
-                gameBoard.setCost(gameBoard.getCost()+1);
+                //gameBoard.setCost(gameBoard.getCost() + 1);
 
             } else if (squareType == playerGoalType) {
                 // Player reaches own goal
                 gameBoard.removePlayer(pos);
                 gameBoard.removeGoal(nextPosition);
-                gameBoard.setCost(gameBoard.getCost()+1);
+                //gameBoard.setCost(gameBoard.getCost() + 1);
                 break;
-            }
-            else if (HelpingFunctions.isGoalSquare(squareType)) {
+            } else if (HelpingFunctions.isGoalSquare(squareType)) {
                 // Continue moving through other goals
                 currentPosition = nextPosition;
-                gameBoard.setCost(gameBoard.getCost()+1);
-            }
-            else if (squareType == SquareTypes.WEAK_BARRIER) {
+                //gameBoard.setCost(gameBoard.getCost() + 1);
+            } else if (squareType == SquareTypes.WEAK_BARRIER) {
                 // Hit a weak barrier; reset the game
                 return null;
             } else if (squareType != SquareTypes.EMPTY) {
@@ -96,7 +90,7 @@ public class Play {
             } else {
                 // Continue moving through empty squares
                 currentPosition = nextPosition;
-                gameBoard.setCost(gameBoard.getCost()+1);
+                //gameBoard.setCost(gameBoard.getCost() + 1);
             }
         }
         return currentPosition;
@@ -116,7 +110,7 @@ public class Play {
         SquareTypes squareType = gameBoard.getSquareType(nextPosition);
 
         // Check if the next square is empty or a goal square
-        return squareType == SquareTypes.EMPTY || HelpingFunctions.isGoalSquare(squareType) ;
+        return squareType == SquareTypes.EMPTY || HelpingFunctions.isGoalSquare(squareType);
     }
 
     public static void reArrangePlayers(List<Position> playersPositions, Directions direction) {

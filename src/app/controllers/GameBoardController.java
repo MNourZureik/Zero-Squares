@@ -13,9 +13,9 @@ import java.util.List;
 public class GameBoardController {
     private final Stage stage;
     private final Scene scene;
-    private GameBoard gameBoard;
     private final boolean isComputerMode;
     private final String algorithm;
+    private GameBoard gameBoard;
     private List<Directions> solutionPath;
     private int currentStep;
     private GameBoardView view;
@@ -112,6 +112,7 @@ public class GameBoardController {
             currentStep++;
         }
     }
+
     public int getCurrentStep() {
         return currentStep;
     }

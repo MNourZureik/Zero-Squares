@@ -12,8 +12,8 @@ public class PlayerModeController {
 
     // In your controller or main application
     public static void navigateToGameBoard(Stage stage, int levelIndex, boolean isComputerMode, String algorithm) {
-        GameBoardController controller = new GameBoardController(stage,stage.getScene() ,  levelIndex, isComputerMode, algorithm);
-        GameBoardView gameBoardView = new GameBoardView(controller , levelIndex );
+        GameBoardController controller = new GameBoardController(stage, stage.getScene(), levelIndex, isComputerMode, algorithm);
+        GameBoardView gameBoardView = new GameBoardView(controller, levelIndex);
         stage.getScene().setRoot(gameBoardView.getView());
     }
 

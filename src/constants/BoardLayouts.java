@@ -16,6 +16,7 @@ public class BoardLayouts {
             createLevel2(),
             createLevel6(),
             createLevel7(),
+            createLevel9(),
             createLevel10(),
             createLevel11(),
             createLevel15(),
@@ -212,6 +213,92 @@ public class BoardLayouts {
         return new GameBoard(board, goals, players);
     }
 
+    static GameBoard createLevel9(){
+        final HashMap<Position, SquareTypes> board = new HashMap<>();
+        final HashMap<Position, SquareTypes> goals = new HashMap<>();
+        final HashMap<Position, SquareTypes> players = new HashMap<>();
+
+        setSquare(getPosition(1, 2), SquareTypes.RED,players);
+        setSquare(getPosition(6, 2), SquareTypes.BLUE,players);
+
+        setSquare(getPosition(4, 9), SquareTypes.RED_GOAL,goals);
+        setSquare(getPosition(2, 7), SquareTypes.BLUE_GOAL,goals);
+
+        for (int i = 1 ; i<= 5 ; i++ ){
+            setSquare(getPosition(0, i), SquareTypes.BARRIER,board);
+        }
+
+        setSquare(getPosition(1, 0), SquareTypes.BARRIER,board);
+        setSquare(getPosition(1, 1), SquareTypes.BARRIER,board);
+        setSquare(getPosition(1, 3), SquareTypes.EMPTY,board);
+        setSquare(getPosition(1, 4), SquareTypes.EMPTY,board);
+        for (int i = 5 ; i<= 9 ; i++ ){
+            setSquare(getPosition(1, i), SquareTypes.BARRIER,board);
+        }
+        // Row 3 :
+
+        setSquare(getPosition(2, 0), SquareTypes.BARRIER,board);
+        for (int i = 1 ;i <= 4; i++){
+            setSquare(getPosition(2, i), SquareTypes.EMPTY,board);
+        }
+        setSquare(getPosition(2, 5), SquareTypes.BARRIER,board);
+        setSquare(getPosition(2, 6), SquareTypes.BARRIER,board);
+        setSquare(getPosition(2, 8), SquareTypes.EMPTY,board);
+        setSquare(getPosition(2, 9), SquareTypes.BARRIER,board);
+
+
+        // Row 4 :
+        setSquare(getPosition(3, 0), SquareTypes.BARRIER,board);
+        for (int i = 1 ; i <= 8 ;i++ ){
+            setSquare(getPosition(3, i), SquareTypes.EMPTY,board);
+        }
+        setSquare(getPosition(3, 9), SquareTypes.BARRIER,board);
+        setSquare(getPosition(3, 10), SquareTypes.BARRIER,board);
+
+        // Row 5 :
+        setSquare(getPosition(4, 0), SquareTypes.BARRIER,board);
+        for (int i = 1 ; i <= 8 ;i++ ){
+            if(i == 4 || i == 5 || i == 6){
+                setSquare(getPosition(4, i), SquareTypes.BARRIER,board);
+                continue;
+            }
+            setSquare(getPosition(4, i), SquareTypes.EMPTY,board);
+        }
+        setSquare(getPosition(4, 10), SquareTypes.BARRIER,board);
+
+
+        // Row 6 :
+        setSquare(getPosition(5, 0), SquareTypes.BARRIER,board);
+        for (int i = 1 ; i <= 8 ;i++ ){
+            setSquare(getPosition(5, i), SquareTypes.EMPTY,board);
+        }
+        setSquare(getPosition(5, 9), SquareTypes.BARRIER,board);
+        setSquare(getPosition(5, 10), SquareTypes.BARRIER,board);
+
+        // Row 7 :
+        for (int i = 0 ; i<= 9;i++){
+            if (i == 2){
+                continue;
+            }
+            if (i == 3){
+                setSquare(getPosition(6, i), SquareTypes.EMPTY,board);
+                continue;
+            }
+            setSquare(getPosition(6, i), SquareTypes.BARRIER,board);
+        }
+
+        // Row 8 :
+        for (int i = 1 ; i<= 4;i++) {
+            setSquare(getPosition(7, i), SquareTypes.BARRIER,board);
+        }
+
+
+
+
+
+
+        return new GameBoard(board, goals, players);
+    }
     static GameBoard createLevel10() {
         final HashMap<Position, SquareTypes> board = new HashMap<>();
         final HashMap<Position, SquareTypes> goals = new HashMap<>();

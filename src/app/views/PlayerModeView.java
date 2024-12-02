@@ -28,7 +28,7 @@ public class PlayerModeView {
         humanModeButton.setOnAction(_ -> PlayerModeController.navigateToGameBoard(stage, levelIndex, false, null));
 
         //view.getChildren().add(borderPane);
-        view.getChildren().addAll(computerModeButton, humanModeButton , backButton);
+        view.getChildren().addAll(computerModeButton, humanModeButton, backButton);
     }
 
     public VBox getView() {

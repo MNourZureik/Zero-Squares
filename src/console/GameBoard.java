@@ -73,6 +73,7 @@ public class GameBoard {
     public List<Position> getGoalsPositions() {
         return new ArrayList<>(goals.keySet());
     }
+
     public void resetGoals() {
         for (Position pos : goals.keySet()) {
             if (board.get(pos) == SquareTypes.EMPTY) {
@@ -112,7 +113,7 @@ public class GameBoard {
 
     @Override
     public int hashCode() {
-        return Objects.hash(players , goals);
+        return Objects.hash(players, goals);
     }
 
     public int getCost() {
