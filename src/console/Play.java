@@ -5,7 +5,9 @@ import constants.HelpingFunctions;
 import constants.Position;
 import constants.SquareTypes;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class Play {
 
@@ -69,18 +71,18 @@ public class Play {
                 // Color the cell and continue moving
                 gameBoard.setGoal(nextPosition, playerType);
                 currentPosition = nextPosition;
-                //gameBoard.setCost(gameBoard.getCost() + 1);
+                gameBoard.setCost(gameBoard.getCost() + 1);
 
             } else if (squareType == playerGoalType) {
                 // Player reaches own goal
                 gameBoard.removePlayer(pos);
                 gameBoard.removeGoal(nextPosition);
-                //gameBoard.setCost(gameBoard.getCost() + 1);
+                gameBoard.setCost(gameBoard.getCost() + 1);
                 break;
             } else if (HelpingFunctions.isGoalSquare(squareType)) {
                 // Continue moving through other goals
                 currentPosition = nextPosition;
-                //gameBoard.setCost(gameBoard.getCost() + 1);
+                gameBoard.setCost(gameBoard.getCost() + 1);
             } else if (squareType == SquareTypes.WEAK_BARRIER) {
                 // Hit a weak barrier; reset the game
                 return null;
@@ -90,7 +92,7 @@ public class Play {
             } else {
                 // Continue moving through empty squares
                 currentPosition = nextPosition;
-                //gameBoard.setCost(gameBoard.getCost() + 1);
+                gameBoard.setCost(gameBoard.getCost() + 1);
             }
         }
         return currentPosition;
@@ -122,5 +124,4 @@ public class Play {
         };
         playersPositions.sort(comparator);
     }
-
 }

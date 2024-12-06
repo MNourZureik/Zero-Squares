@@ -4,6 +4,11 @@ import console.GameBoard;
 import console.Node;
 import javafx.scene.paint.Color;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.*;
 
 public class HelpingFunctions {
@@ -22,28 +27,6 @@ public class HelpingFunctions {
             default -> false;
         };
     }
-
-    public static int isPlayerGoal(Position player, Position goal, GameBoard gameBoard) {
-        SquareTypes playerPosType = gameBoard.getSquareType(player);
-        SquareTypes goalPosType = gameBoard.getSquareType(goal);
-
-        int h = 0;
-
-        boolean isEqual = switch (playerPosType) {
-            case RED -> goalPosType == SquareTypes.RED_GOAL;
-            case BLUE -> goalPosType == SquareTypes.BLUE_GOAL;
-            case YELLOW -> goalPosType == SquareTypes.YELLOW_GOAL;
-            case PINK -> goalPosType == SquareTypes.PINK_GOAL;
-            case CYAN -> goalPosType == SquareTypes.CYAN_GOAL;
-            default -> false;
-        };
-        if (isEqual) {
-            h += (Math.abs((goal.getX() - player.getX()) + Math.abs(goal.getY() - player.getY())));
-        }
-
-        return h;
-    }
-
 
     // Check if the square type represents a player
     public static boolean isPlayerSquare(SquareTypes squareType) {
@@ -150,7 +133,7 @@ public class HelpingFunctions {
         };
     }
 
-    public static List<Directions> ReturnGoalPath(Node goalNode, long startTime, int visitedSize, boolean isHaveCost) {
+    public static List<Directions> ReturnGoalPath(String type, Node goalNode, long startTime, int visitedSize, boolean isHaveCost) {
         Deque<Directions> path = new ArrayDeque<>();
         Node node = goalNode;
 
@@ -160,14 +143,126 @@ public class HelpingFunctions {
         }
 
         long elapsedTime = System.currentTimeMillis() - startTime;
-        System.out.println("Visited Set: " + visitedSize);
-        System.out.println("Path Length: " + path.size());
-        System.out.println("Directions: " + path);
-        System.out.println("Time: " + elapsedTime / 1000.0 + " seconds");
-        if (isHaveCost) {
-            System.out.println("Cost: " + goalNode.getState().getCost());
+
+        // Write output to a log file
+        try (FileWriter fileWriter = new FileWriter("algorithm_output.log", true);
+             PrintWriter logWriter = new PrintWriter(fileWriter)) {
+
+            if (!type.equalsIgnoreCase("hill-climbing-simple:") && !type.equalsIgnoreCase("hill-climbing-steepest:")) {
+                logWriter.println("Algorithm: " + type);
+                logWriter.println("Visited Set: " + visitedSize);
+                logWriter.println("Path Length: " + path.size());
+                logWriter.println("Directions: " + path);
+                logWriter.println("Time: " + (elapsedTime / 1000.0) + " second");
+                if (isHaveCost) {
+                    logWriter.println("Cost: " + goalNode.getState().getCost());
+                }
+            } else {
+                logWriter.println("Algorithm: " + type);
+                if (visitedSize == 0) {
+                    logWriter.println("No solution found for this level\n");
+                } else {
+                    logWriter.println("Visited Set: " + visitedSize);
+                    logWriter.println("Time: " + elapsedTime / 1000.0 + " seconds");
+                    logWriter.println("Path Length: " + path.size());
+                    logWriter.println("Directions: " + path);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle exceptions during file writing
         }
+
         return new ArrayList<>(path);
     }
 
+    public static void clearLogFileIfNotEmpty(String logFilePath) {
+        File logFile = new File(logFilePath);
+
+        if (!logFile.exists()) {
+            System.out.println("Log file does not exist.");
+            return;
+        }
+
+        try {
+            // Check if the file has content
+            String content = Files.readString(logFile.toPath());
+            if (content.isBlank()) {
+                System.out.println("Log file is already empty.");
+            } else {
+                // Clear the file
+                try (FileWriter fileWriter = new FileWriter(logFile, false)) {
+                    fileWriter.write(""); // Clear the file
+                    System.out.println("Log file cleared successfully.");
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading or clearing the log file: " + e.getMessage());
+        }
+    }
+
+    public static long measureDataStorageUsage(Runnable storageTask) {
+        long initialMemoryUsage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        storageTask.run();
+        long finalMemoryUsage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        return Math.abs(finalMemoryUsage - initialMemoryUsage) / 1000;
+    }
+
+    public static String getFormattedDataStorageUsage(long dataStorageUsageBytes) {
+        if (dataStorageUsageBytes < 1024) {
+            return String.format("Data storage usage: %d bytes", dataStorageUsageBytes);
+        } else if (dataStorageUsageBytes < 1048576) {
+            return String.format("Data storage usage: %.2f KB", dataStorageUsageBytes / 1024.0);
+        } else {
+            return String.format("Data storage usage: %.2f MB", dataStorageUsageBytes / 1048576.0);
+        }
+    }
+
+    public static Position calculateNewPosition(GameBoard gameBoard, Position pos, Directions direction) {
+        Position currentPosition = pos;
+        SquareTypes playerType = gameBoard.getSquareType(pos);
+
+        // Ensure the position is a player square
+        if (!isPlayerSquare(playerType)) {
+            return null;
+        }
+
+        SquareTypes playerGoalType = HelpingFunctions.getPlayerGoalType(playerType);
+
+        while (true) {
+            Position nextPosition = getNextPosition(currentPosition, direction);
+            SquareTypes squareType = gameBoard.getSquareType(nextPosition);
+
+            // Handle different square types based on game rules
+            if (squareType == SquareTypes.COLORABLE) {
+                // Simulate coloring without modifying game state
+                currentPosition = nextPosition;
+            } else if (squareType == playerGoalType) {
+                // Player reaches its own goal
+                break; // Stop moving
+            } else if (HelpingFunctions.isGoalSquare(squareType)) {
+                // Continue through other goal squares
+                currentPosition = nextPosition;
+            } else if (squareType == SquareTypes.WEAK_BARRIER) {
+                // Hit a weak barrier; movement is invalid
+                return null;
+            } else if (squareType != SquareTypes.EMPTY) {
+                // Hit any non-empty square; stop moving
+                break;
+            } else {
+                // Continue moving through empty squares
+                currentPosition = nextPosition;
+            }
+        }
+
+        return currentPosition;
+    }
+
+    public static Position getNextPosition(Position pos, Directions direction) {
+        return switch (direction) {
+            case UP -> new Position(pos.getX() - 1, pos.getY());
+            case DOWN -> new Position(pos.getX() + 1, pos.getY());
+            case LEFT -> new Position(pos.getX(), pos.getY() - 1);
+            case RIGHT -> new Position(pos.getX(), pos.getY() + 1);
+        };
+    }
 }

@@ -1,0 +1,57 @@
+////////////////////////////////////////////////////// LEVEL 10 //////////////////////////////////////////////////////
+Algorithm: A-Star:
+Visited Set: 295
+Path Length: 44
+Directions: [UP, LEFT, UP, LEFT, UP, LEFT, DOWN, LEFT, DOWN, LEFT, UP, RIGHT, DOWN, LEFT, UP, RIGHT, UP, RIGHT, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, DOWN, RIGHT, DOWN, LEFT, DOWN, LEFT, UP, RIGHT, UP, LEFT, UP, LEFT, UP, LEFT, DOWN, LEFT, DOWN, RIGHT, UP, RIGHT]
+Time: 0.264 second
+Cost: 103
+Data storage usage: 12.94 KB
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: A-Star-Advanced:
+Visited Set: 292
+Path Length: 44
+Directions: [UP, LEFT, UP, LEFT, UP, LEFT, DOWN, LEFT, DOWN, LEFT, UP, RIGHT, DOWN, LEFT, UP, RIGHT, UP, RIGHT, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, DOWN, RIGHT, DOWN, LEFT, DOWN, LEFT, UP, RIGHT, UP, LEFT, UP, LEFT, UP, LEFT, DOWN, LEFT, DOWN, RIGHT, UP, RIGHT]
+Time: 0.248 second
+Cost: 103
+Data storage usage: 54.20 KB
+------------------------------------------------------------------------------------------------------------------------------------
+
+////////////////////////////////////////////////////// LEVEL 20 //////////////////////////////////////////////////////
+Algorithm: A-Star:
+Visited Set: 269
+Path Length: 14
+Directions: [LEFT, DOWN, LEFT, UP, RIGHT, UP, LEFT, LEFT, DOWN, LEFT, UP, RIGHT, DOWN, RIGHT]
+Time: 1.048 second
+Cost: 36
+Data storage usage: 2.19 KB
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: A-Star-Advanced:
+Visited Set: 58
+Path Length: 14
+Directions: [DOWN, UP, LEFT, UP, LEFT, RIGHT, UP, LEFT, DOWN, LEFT, UP, RIGHT, DOWN, RIGHT]
+Time: 0.046 second
+Cost: 36
+Data storage usage: 24.58 KB
+------------------------------------------------------------------------------------------------------------------------------------
+
+////////////////////////////////////////////////////// LEVEL 30 //////////////////////////////////////////////////////
+Algorithm: A-Star:
+Visited Set: 4381
+Path Length: 23
+Directions: [DOWN, RIGHT, RIGHT, RIGHT, LEFT, UP, LEFT, UP, RIGHT, DOWN, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, UP, LEFT, LEFT, DOWN, UP, LEFT, DOWN]
+Time: 2.08 second
+Cost: 113
+Data storage usage: 319.42 KB
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: A-Star-Advanced:
+Visited Set: 279
+Path Length: 33
+Directions: [RIGHT, UP, RIGHT, UP, LEFT, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, DOWN, UP, DOWN, UP, RIGHT, UP, RIGHT, DOWN, LEFT, UP, RIGHT, UP, RIGHT, DOWN, DOWN, LEFT, UP, RIGHT, UP, DOWN, RIGHT, UP]
+Time: 0.166 second
+Cost: 135
+Data storage usage: 88.06 KB
+------------------------------------------------------------------------------------------------------------------------------------
+

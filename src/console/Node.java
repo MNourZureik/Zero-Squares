@@ -8,12 +8,21 @@ public class Node {
     private final GameBoard state;
     private final Node predecessor;
     private final Directions action;
+    private int heuristic;
+
+    public Node(GameBoard state, Node predecessor, Directions action, int heuristic) {
+        this.state = state;
+        this.predecessor = predecessor;
+        this.action = action;
+        this.heuristic = heuristic;
+    }
 
     public Node(GameBoard state, Node predecessor, Directions action) {
         this.state = state;
         this.predecessor = predecessor;
         this.action = action;
     }
+
 
     public GameBoard getState() {
         return state;
@@ -27,6 +36,9 @@ public class Node {
         return action;
     }
 
+    public int getHeuristic() {
+        return heuristic;
+    }
     // Override equals for proper comparison in sets and maps
     @Override
     public boolean equals(Object other) {
