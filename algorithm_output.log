@@ -1,57 +1,192 @@
 ////////////////////////////////////////////////////// LEVEL 10 //////////////////////////////////////////////////////
+Algorithm: BFS:
+Visited Set: 301
+Path Length: 44
+Directions: [UP, LEFT, UP, LEFT, UP, LEFT, DOWN, LEFT, DOWN, LEFT, UP, RIGHT, DOWN, LEFT, UP, RIGHT, UP, RIGHT, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, DOWN, RIGHT, DOWN, LEFT, DOWN, LEFT, UP, RIGHT, UP, LEFT, UP, LEFT, UP, LEFT, DOWN, LEFT, DOWN, RIGHT, UP, RIGHT]
+Time: 0.031 second
+Data storage usage: 12.29 KB
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: DFS:
+Visited Set: 232
+Path Length: 72
+Directions: [DOWN, RIGHT, UP, RIGHT, DOWN, LEFT, UP, RIGHT, UP, RIGHT, UP, RIGHT, DOWN, RIGHT, UP, LEFT, UP, LEFT, DOWN, LEFT, DOWN, RIGHT, UP, LEFT, UP, LEFT, DOWN, LEFT, DOWN, RIGHT, UP, LEFT, UP, RIGHT, UP, RIGHT, UP, LEFT, DOWN, LEFT, UP, RIGHT, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, DOWN, LEFT, DOWN, LEFT, UP, RIGHT, UP, LEFT, UP, LEFT, UP, LEFT, DOWN, LEFT, DOWN, RIGHT, UP, RIGHT]
+Time: 0.016 second
+Data storage usage: 14.17 KB
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: UCS:
+Visited Set: 300
+Path Length: 44
+Directions: [UP, LEFT, UP, LEFT, UP, LEFT, DOWN, LEFT, DOWN, LEFT, UP, RIGHT, DOWN, LEFT, UP, RIGHT, UP, RIGHT, DOWN, RIGHT, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, DOWN, LEFT, DOWN, LEFT, UP, RIGHT, UP, LEFT, UP, LEFT, UP, LEFT, DOWN, LEFT, DOWN, RIGHT, UP, RIGHT]
+Time: 0.016 second
+Cost: 103
+Data storage usage: 12.67 KB
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: DFS-Recursion:
+Visited Set: 245
+Path Length: 111
+Directions: [UP, DOWN, LEFT, UP, RIGHT, UP, DOWN, LEFT, RIGHT, UP, LEFT, UP, DOWN, LEFT, UP, LEFT, UP, LEFT, DOWN, LEFT, UP, DOWN, LEFT, UP, DOWN, DOWN, RIGHT, UP, DOWN, LEFT, UP, RIGHT, UP, DOWN, RIGHT, UP, LEFT, UP, RIGHT, UP, LEFT, RIGHT, UP, LEFT, DOWN, LEFT, UP, RIGHT, UP, RIGHT, UP, DOWN, LEFT, UP, DOWN, LEFT, UP, DOWN, RIGHT, UP, DOWN, LEFT, UP, LEFT, RIGHT, UP, DOWN, LEFT, RIGHT, UP, DOWN, LEFT, UP, RIGHT, UP, LEFT, RIGHT, UP, LEFT, UP, LEFT, RIGHT, DOWN, RIGHT, DOWN, LEFT, RIGHT, DOWN, LEFT, UP, DOWN, LEFT, UP, RIGHT, UP, LEFT, UP, LEFT, UP, LEFT, DOWN, LEFT, DOWN, LEFT, UP, DOWN, RIGHT, UP, RIGHT, UP, RIGHT]
+Time: 0.0 second
+Data storage usage: 15.15 KB
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: hill-climbing-simple:
+No solution found for this level
+
+Data storage usage: 272 bytes
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: hill-climbing-steepest:
+No solution found for this level
+
+Data storage usage: 519 bytes
+------------------------------------------------------------------------------------------------------------------------------------
+
 Algorithm: A-Star:
 Visited Set: 295
 Path Length: 44
 Directions: [UP, LEFT, UP, LEFT, UP, LEFT, DOWN, LEFT, DOWN, LEFT, UP, RIGHT, DOWN, LEFT, UP, RIGHT, UP, RIGHT, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, DOWN, RIGHT, DOWN, LEFT, DOWN, LEFT, UP, RIGHT, UP, LEFT, UP, LEFT, UP, LEFT, DOWN, LEFT, DOWN, RIGHT, UP, RIGHT]
-Time: 0.264 second
+Time: 0.078 second
 Cost: 103
-Data storage usage: 12.94 KB
+Data storage usage: 2.52 KB
 ------------------------------------------------------------------------------------------------------------------------------------
 
 Algorithm: A-Star-Advanced:
 Visited Set: 292
 Path Length: 44
 Directions: [UP, LEFT, UP, LEFT, UP, LEFT, DOWN, LEFT, DOWN, LEFT, UP, RIGHT, DOWN, LEFT, UP, RIGHT, UP, RIGHT, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, DOWN, RIGHT, DOWN, LEFT, DOWN, LEFT, UP, RIGHT, UP, LEFT, UP, LEFT, UP, LEFT, DOWN, LEFT, DOWN, RIGHT, UP, RIGHT]
-Time: 0.248 second
+Time: 0.109 second
 Cost: 103
-Data storage usage: 54.20 KB
+Data storage usage: 42.11 KB
 ------------------------------------------------------------------------------------------------------------------------------------
 
 ////////////////////////////////////////////////////// LEVEL 20 //////////////////////////////////////////////////////
+Algorithm: BFS:
+Visited Set: 4628
+Path Length: 13
+Directions: [DOWN, UP, LEFT, UP, RIGHT, UP, LEFT, LEFT, DOWN, LEFT, UP, RIGHT, DOWN]
+Time: 0.136 second
+Data storage usage: 1.02 KB
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: DFS:
+Visited Set: 328
+Path Length: 89
+Directions: [RIGHT, RIGHT, LEFT, DOWN, RIGHT, UP, RIGHT, DOWN, LEFT, LEFT, DOWN, RIGHT, UP, RIGHT, RIGHT, DOWN, RIGHT, DOWN, RIGHT, LEFT, DOWN, RIGHT, UP, LEFT, DOWN, RIGHT, UP, LEFT, DOWN, LEFT, UP, RIGHT, RIGHT, LEFT, DOWN, RIGHT, UP, RIGHT, DOWN, LEFT, LEFT, DOWN, RIGHT, UP, RIGHT, RIGHT, DOWN, RIGHT, DOWN, RIGHT, LEFT, UP, LEFT, DOWN, RIGHT, UP, RIGHT, RIGHT, DOWN, LEFT, DOWN, RIGHT, UP, RIGHT, DOWN, LEFT, LEFT, UP, RIGHT, RIGHT, DOWN, RIGHT, DOWN, RIGHT, LEFT, DOWN, LEFT, UP, LEFT, DOWN, RIGHT, DOWN, LEFT, UP, RIGHT, DOWN, RIGHT, UP, LEFT]
+Time: 0.015 second
+Data storage usage: 6.75 KB
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: UCS:
+Visited Set: 2572
+Path Length: 14
+Directions: [DOWN, LEFT, LEFT, UP, RIGHT, UP, LEFT, LEFT, DOWN, LEFT, UP, RIGHT, DOWN, RIGHT]
+Time: 0.047 second
+Cost: 36
+Data storage usage: 53.25 KB
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: DFS-Recursion:
+Visited Set: 30
+Path Length: 24
+Directions: [UP, DOWN, UP, LEFT, UP, DOWN, LEFT, UP, DOWN, RIGHT, UP, LEFT, DOWN, LEFT, UP, RIGHT, UP, LEFT, DOWN, LEFT, UP, RIGHT, DOWN, RIGHT]
+Time: 0.0 second
+Data storage usage: 0 bytes
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: hill-climbing-simple:
+No solution found for this level
+
+Data storage usage: 0 bytes
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: hill-climbing-steepest:
+No solution found for this level
+
+Data storage usage: 0 bytes
+------------------------------------------------------------------------------------------------------------------------------------
+
 Algorithm: A-Star:
 Visited Set: 269
 Path Length: 14
 Directions: [LEFT, DOWN, LEFT, UP, RIGHT, UP, LEFT, LEFT, DOWN, LEFT, UP, RIGHT, DOWN, RIGHT]
-Time: 1.048 second
+Time: 0.313 second
 Cost: 36
-Data storage usage: 2.19 KB
+Data storage usage: 84.89 KB
 ------------------------------------------------------------------------------------------------------------------------------------
 
 Algorithm: A-Star-Advanced:
 Visited Set: 58
 Path Length: 14
 Directions: [DOWN, UP, LEFT, UP, LEFT, RIGHT, UP, LEFT, DOWN, LEFT, UP, RIGHT, DOWN, RIGHT]
-Time: 0.046 second
+Time: 0.031 second
 Cost: 36
-Data storage usage: 24.58 KB
+Data storage usage: 119.60 KB
 ------------------------------------------------------------------------------------------------------------------------------------
 
 ////////////////////////////////////////////////////// LEVEL 30 //////////////////////////////////////////////////////
+Algorithm: BFS:
+Visited Set: 436317
+Path Length: 22
+Directions: [DOWN, RIGHT, UP, RIGHT, UP, LEFT, RIGHT, DOWN, DOWN, LEFT, UP, LEFT, DOWN, RIGHT, RIGHT, RIGHT, UP, RIGHT, RIGHT, LEFT, UP, DOWN]
+Time: 15.848 second
+Data storage usage: 3.13 MB
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: DFS:
+Visited Set: 560506
+Path Length: 257
+Directions: [RIGHT, RIGHT, RIGHT, LEFT, LEFT, UP, RIGHT, RIGHT, LEFT, UP, RIGHT, UP, RIGHT, DOWN, RIGHT, LEFT, DOWN, RIGHT, LEFT, LEFT, RIGHT, UP, RIGHT, DOWN, RIGHT, LEFT, DOWN, RIGHT, UP, RIGHT, DOWN, RIGHT, LEFT, DOWN, LEFT, DOWN, RIGHT, RIGHT, UP, RIGHT, RIGHT, LEFT, DOWN, RIGHT, DOWN, LEFT, DOWN, RIGHT, LEFT, UP, RIGHT, DOWN, LEFT, DOWN, RIGHT, UP, RIGHT, DOWN, RIGHT, DOWN, LEFT, LEFT, DOWN, RIGHT, RIGHT, LEFT, UP, RIGHT, LEFT, UP, RIGHT, DOWN, RIGHT, LEFT, UP, RIGHT, DOWN, RIGHT, LEFT, UP, LEFT, DOWN, RIGHT, LEFT, LEFT, UP, RIGHT, RIGHT, LEFT, DOWN, RIGHT, DOWN, RIGHT, LEFT, UP, RIGHT, LEFT, DOWN, RIGHT, LEFT, LEFT, UP, RIGHT, RIGHT, DOWN, RIGHT, UP, RIGHT, DOWN, RIGHT, LEFT, UP, RIGHT, DOWN, LEFT, UP, RIGHT, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, LEFT, UP, LEFT, DOWN, RIGHT, LEFT, LEFT, UP, RIGHT, RIGHT, DOWN, RIGHT, UP, RIGHT, DOWN, RIGHT, LEFT, UP, RIGHT, DOWN, LEFT, UP, RIGHT, DOWN, RIGHT, UP, RIGHT, DOWN, RIGHT, LEFT, UP, LEFT, DOWN, RIGHT, LEFT, LEFT, UP, RIGHT, RIGHT, UP, RIGHT, DOWN, RIGHT, LEFT, UP, RIGHT, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, LEFT, UP, LEFT, DOWN, LEFT, UP, RIGHT, RIGHT, RIGHT, DOWN, RIGHT, UP, RIGHT, UP, RIGHT, DOWN, RIGHT, LEFT, UP, RIGHT, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, UP, RIGHT, RIGHT, DOWN, LEFT, UP, RIGHT, DOWN, LEFT, UP, RIGHT, DOWN, RIGHT, DOWN, LEFT, UP, RIGHT, UP, LEFT, DOWN, LEFT, DOWN, UP, LEFT, DOWN, UP, RIGHT, DOWN, LEFT, DOWN, UP, RIGHT, DOWN, UP, RIGHT, DOWN, RIGHT, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, UP, RIGHT, LEFT, DOWN, RIGHT, UP, RIGHT, DOWN, LEFT, UP, RIGHT, DOWN, UP]
+Time: 37.759 second
+Data storage usage: 132.98 KB
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: UCS:
+Visited Set: 237944
+Path Length: 23
+Directions: [DOWN, RIGHT, RIGHT, RIGHT, LEFT, UP, LEFT, UP, RIGHT, DOWN, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, UP, LEFT, LEFT, DOWN, UP, LEFT, DOWN]
+Time: 9.023 second
+Cost: 113
+Data storage usage: 1.58 MB
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: DFS-Recursion:
+Visited Set: 556971
+Path Length: 228
+Directions: [DOWN, RIGHT, UP, RIGHT, UP, LEFT, UP, RIGHT, DOWN, UP, DOWN, UP, DOWN, LEFT, UP, LEFT, DOWN, RIGHT, UP, RIGHT, UP, DOWN, LEFT, UP, RIGHT, UP, DOWN, LEFT, UP, RIGHT, UP, DOWN, RIGHT, UP, RIGHT, UP, DOWN, LEFT, UP, RIGHT, UP, DOWN, LEFT, UP, RIGHT, UP, DOWN, RIGHT, UP, LEFT, RIGHT, DOWN, LEFT, UP, LEFT, UP, DOWN, LEFT, RIGHT, UP, RIGHT, UP, DOWN, LEFT, UP, RIGHT, UP, DOWN, RIGHT, UP, LEFT, UP, LEFT, DOWN, LEFT, UP, LEFT, DOWN, RIGHT, UP, RIGHT, UP, DOWN, RIGHT, UP, LEFT, RIGHT, UP, DOWN, LEFT, UP, LEFT, UP, DOWN, LEFT, UP, RIGHT, RIGHT, UP, DOWN, RIGHT, UP, LEFT, UP, RIGHT, DOWN, LEFT, RIGHT, UP, DOWN, LEFT, RIGHT, RIGHT, UP, LEFT, RIGHT, UP, DOWN, LEFT, UP, LEFT, RIGHT, UP, DOWN, LEFT, RIGHT, UP, RIGHT, DOWN, LEFT, RIGHT, RIGHT, UP, LEFT, RIGHT, DOWN, DOWN, UP, LEFT, UP, DOWN, LEFT, UP, LEFT, UP, DOWN, RIGHT, UP, LEFT, RIGHT, DOWN, DOWN, UP, LEFT, UP, DOWN, LEFT, UP, LEFT, RIGHT, UP, DOWN, DOWN, UP, LEFT, UP, LEFT, RIGHT, DOWN, DOWN, LEFT, UP, DOWN, LEFT, UP, LEFT, RIGHT, UP, DOWN, LEFT, UP, LEFT, RIGHT, UP, DOWN, LEFT, UP, LEFT, RIGHT, UP, DOWN, RIGHT, UP, RIGHT, DOWN, LEFT, RIGHT, RIGHT, LEFT, UP, LEFT, UP, DOWN, RIGHT, UP, LEFT, LEFT, UP, DOWN, UP, LEFT, DOWN, LEFT, UP, RIGHT, UP, RIGHT, DOWN, LEFT, RIGHT, DOWN, LEFT, RIGHT, RIGHT, UP, LEFT, RIGHT, UP]
+Time: 52.566 second
+Data storage usage: 1.69 MB
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: hill-climbing-simple:
+No solution found for this level
+
+Data storage usage: 0 bytes
+------------------------------------------------------------------------------------------------------------------------------------
+
+Algorithm: hill-climbing-steepest:
+No solution found for this level
+
+Data storage usage: 0 bytes
+------------------------------------------------------------------------------------------------------------------------------------
+
 Algorithm: A-Star:
 Visited Set: 4381
 Path Length: 23
 Directions: [DOWN, RIGHT, RIGHT, RIGHT, LEFT, UP, LEFT, UP, RIGHT, DOWN, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, UP, LEFT, LEFT, DOWN, UP, LEFT, DOWN]
-Time: 2.08 second
+Time: 0.859 second
 Cost: 113
-Data storage usage: 319.42 KB
+Data storage usage: 3.07 MB
 ------------------------------------------------------------------------------------------------------------------------------------
 
 Algorithm: A-Star-Advanced:
 Visited Set: 279
 Path Length: 33
 Directions: [RIGHT, UP, RIGHT, UP, LEFT, UP, RIGHT, DOWN, RIGHT, DOWN, RIGHT, DOWN, UP, DOWN, UP, RIGHT, UP, RIGHT, DOWN, LEFT, UP, RIGHT, UP, RIGHT, DOWN, DOWN, LEFT, UP, RIGHT, UP, DOWN, RIGHT, UP]
-Time: 0.166 second
+Time: 0.063 second
 Cost: 135
-Data storage usage: 88.06 KB
+Data storage usage: 162.47 KB
 ------------------------------------------------------------------------------------------------------------------------------------
 
